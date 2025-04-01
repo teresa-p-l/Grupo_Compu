@@ -9,14 +9,11 @@
 #include <cmath>
 
 
-<<<<<<< HEAD
-=======
 //pa ti mi cola
 
 #include <stdio.h>
 
 int main() {
-    printf("Hola mundo");
+    cout << ("Hola mundo");
     return 0;
 }
->>>>>>> 80ba3ee079bbaba20211eb399d674f1921cc5231
