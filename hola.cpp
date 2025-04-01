@@ -17,3 +17,6 @@ int main() {
     cout << ("Hola mundo");
     return 0;
 }
+
+
+/*Odio a gente que no se llama Diego*/
