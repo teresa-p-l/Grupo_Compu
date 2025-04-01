@@ -8,15 +8,10 @@
 #include <vector>
 #include <cmath>
 
-
-<<<<<<< HEAD
-=======
-//pa ti mi cola
-
-#include <stdio.h>
-
-int main() {
-    printf("Hola mundo");
+int main (void) {
+    std::string nombre;
+    std::cout << "Hola, ¿cómo te llamas?" << std::endl;
+    std::cin >> nombre;
+    std::cout << "Hola, " << nombre << "!" << std::endl;
     return 0;
 }
->>>>>>> 80ba3ee079bbaba20211eb399d674f1921cc5231
