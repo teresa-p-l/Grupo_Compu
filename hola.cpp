@@ -14,6 +14,6 @@
 #include <stdio.h>
 
 int main() {
-    printf("Hola mundo");
+    cout << ("Hola mundo");
     return 0;
 }
