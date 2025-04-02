@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
-
+using namespace std;
 
 <<<<<<< HEAD
 =======
@@ -16,6 +16,9 @@
 #include <stdio.h>
 
 int main() {
-    printf("Hola mundo");
+    cout << ("Hola mundo");
     return 0;
 }
+
+
+/*Odio a gente que no se llama Diego*/
