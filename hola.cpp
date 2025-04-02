@@ -22,6 +22,6 @@ int main() {
 /*Odio a gente que no se llama Diego*/
 
 int main() {
-    cout << ("pa vosotros mis colas");
+    cout << ("hola buenas");
     return 0;
 }
