@@ -9,8 +9,8 @@
 #include <cmath>
 using namespace std;
 
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 //pa ti mi cola
 
 #include <stdio.h>
