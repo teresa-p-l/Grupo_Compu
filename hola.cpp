@@ -9,13 +9,14 @@
 #include <cmath>
 using namespace std;
 
+<<<<<<< HEAD
+=======
 //pa ti mi cola
 
 #include <stdio.h>
 
-int main(void) {
+int main() {
     cout << ("Hola mundo");
-    cout << ("hola buenas");
     return 0;
 }
 
