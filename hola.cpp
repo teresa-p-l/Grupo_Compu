@@ -7,8 +7,6 @@ using namespace std;
 
 //<<<<<<< HEAD
 //=======
-//pa ti mi cola
-
 
 #include <stdio.h>
 using namespace std;
