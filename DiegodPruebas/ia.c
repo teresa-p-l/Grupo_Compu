@@ -65,6 +65,13 @@ int main() {
     double masses[MAX_BODIES];
     int num_bodies;
 
+    // Open output file
+    FILE *output_file = fopen("output.txt", "w");
+    if (output_file == NULL) {
+        printf("Error opening output file\n");
+        return 1;
+    }
+
     // Read initial data from files
     read_vector_file("pos.txt", positions, &num_bodies);
     read_vector_file("velo.txt", velocities, &num_bodies);
@@ -102,12 +109,13 @@ int main() {
             positions[i] = new_positions[i];
         }
 
-        // Output positions for this step
-        printf("Step %d:\n", step);
+        // Write positions to the output file
+        fprintf(output_file, "Step %d:\n", step);
         for (int i = 0; i < num_bodies; i++) {
-            printf("Body %d: Position (%lf, %lf, %lf)\n", i, positions[i].x, positions[i].y, positions[i].z);
+            fprintf(output_file, "Body %d: %lf %lf %lf\n", i, positions[i].x, positions[i].y, positions[i].z);
         }
     }
 
+    fclose(output_file);
     return 0;
 }
