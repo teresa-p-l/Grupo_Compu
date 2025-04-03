@@ -12,7 +12,7 @@ int main(void)
 {
     char data[MAX_LINES][MAX_LEN]; //We define the vector that will store the lines
 
-    File *file; //We define the file pointer
+    FILE *file; //We define the file pointer
 
     file = fopen("chat.txt", "r"); //We open the file in read mode
 
@@ -45,5 +45,7 @@ int main(void)
     {
         printf("%s", data[i]); //We print the lines we have read.
     }
+
+    return 0; //We return 0 to signal that everything has gone well.
 
 }
