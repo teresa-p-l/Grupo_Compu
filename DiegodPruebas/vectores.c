@@ -28,7 +28,7 @@ int main(void)
 
     //To read the data we will have a loop that ends if there is an error or if it ends.
 
-    while(!feof(file) && !ferrror(file)) 
+    while(!feof(file) && !ferror(file)) 
     //So long as we havent reached the end of the file, continue.
     //And so long as there is no error, continue.
     {
@@ -48,4 +48,36 @@ int main(void)
 
     return 0; //We return 0 to signal that everything has gone well.
 
+}
+
+
+
+
+
+
+
+
+
+//Now lets make it a function with FLOAT numbers
+
+// Function to read lines from a file and store them in a vector
+int read_file_to_vector(const char *filename, float data[MAX_LINES][MAX_LEN]) {
+    FILE *file = fopen(filename, "r"); // Open the file in read mode
+
+    if (file == NULL) {
+        printf("Error opening file: %s\n", filename);
+        return 1; // Return 1 to indicate an error
+    }
+
+    int line = 0; // Line counter
+
+    // Read the file line by line
+    while (!feof(file) && !ferror(file) && line < MAX_LINES && fscanf(file, "%f", &data[line]) == 1) {
+        line++; // Increment the line counterç
+        
+        //The %f is float numbers
+    }
+
+    fclose(file); // Close the file
+    return 0; // Return 0 to indicate success
 }
