@@ -3,8 +3,8 @@
 
 #define MAX_BODIES 100
 #define G 6.67430e-11 // Gravitational constant in m^3 kg^-1 s^-2
-#define TIME_STEP 3600 // Time step in seconds (1 hour)
-#define SIMULATION_STEPS 1000 // Number of simulation steps
+#define TIME_STEP 36000 // Time step in seconds (1 hour)
+#define SIMULATION_STEPS 10000 // Number of simulation steps
 
 typedef struct {
     double x, y, z; // Position
