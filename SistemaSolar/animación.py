@@ -3,10 +3,12 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 # Cargar datos
-data = np.loadtxt("output.txt")
+data = np.loadtxt("c:/Users/User/Documents/Fisica_compu/Compu/Grupo_Compu/SistemaSolar/output.txt")
 t = data[:, 0]  # Tiempo
 x = data[:, 1]  # Posición en X
 y = data[:, 2]  # Posición en Y
+
+
 
 # Configurar figura y ejes
 fig, ax = plt.subplots()
@@ -22,7 +24,7 @@ planet, = ax.plot([], [], 'bo', markersize=5, label="Planeta")
 
 # Función de actualización para la animación
 def update(frame):
-    planet.set_data(x[frame], y[frame])
+    planet.set_data([x[frame]], [y[frame]])
     return planet,
 
 # Crear animación

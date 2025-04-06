@@ -10,6 +10,7 @@
 #define T_TOTAL 1000.0    // Tiempo total de simulación (en unidades reescaladas)
 #define DT 0.01           // Paso temporal
 
+
 FILE *file = fopen("output.txt", "w");
 if (file == NULL) {
     printf("Error al abrir el archivo.\n");
