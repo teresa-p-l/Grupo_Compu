@@ -16,8 +16,8 @@ with open("c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/Di
 
 # Prepare the figure and axis
 fig, ax = plt.subplots(figsize=(8, 8))
-ax.set_xlim(-2e11, 2e11)  # Adjust limits based on your simulation
-ax.set_ylim(-2e11, 2e11)
+ax.set_xlim(-0.5e13, 0.5e13)  # Adjust limits based on your simulation
+ax.set_ylim(-0.5e13, 0.5e13)
 ax.set_xlabel("X Position (m)")
 ax.set_ylabel("Y Position (m)")
 ax.set_title("Animated Trajectories of Celestial Bodies")
