@@ -11,7 +11,7 @@ Para las siguientes tareas hay que especificar esto último.
 
 # Posibles tareas
 
-- Algoritmo de Verlet:
+- Algoritmo de Verlet:  -Diegod
     - Parámetros que coge:
         - Posición en tiempo t
         - Velocidad en tiempo t
@@ -29,10 +29,10 @@ Para las siguientes tareas hay que especificar esto último.
     - Parámetros que suelta:
         - aceleración en tiempo t
 
-- Programa de reescala y reescala^-1
+- Programa de reescala y reescala^-1 --Miguel
 
 - Programa de hacer la energía
 
-- Plotear los planetas, la energía y excentricidad.
+- Plotear los planetas, la energía y excentricidad
 
 
