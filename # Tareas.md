@@ -35,4 +35,6 @@ Para las siguientes tareas hay que especificar esto último.
 
 - Plotear los planetas, la energía y excentricidad
 
+- Optimizar con openMP ya que estamos en C.
+
 

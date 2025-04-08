@@ -3,7 +3,7 @@
 
 #define MAX_BODIES 100
 #define G 6.67430e-11 // Gravitational constant in m^3 kg^-1 s^-2
-#define TIME_STEP 36000 // Time step in seconds (1 hour)
+#define TIME_STEP 36000000 // Time step in seconds (1 hour)
 #define SIMULATION_STEPS 1000 // Number of simulation steps
 
 typedef struct {
@@ -114,6 +114,14 @@ int main() {
         for (int i = 0; i < num_bodies; i++) {
             fprintf(output_file, "Body %d: %lf %lf %lf\n", i, positions[i].x, positions[i].y, positions[i].z);
         }
+
+        
+        // Calculate and write energy to the energy file
+        double kinetic_energy = compute_kinetic_energy(velocities, masses, num_bodies);
+        double potential_energy = compute_potential_energy(positions, masses, num_bodies);
+        double total_energy = kinetic_energy + potential_energy;
+        fprintf(energy_file, "%d %lf\n", step, total_energy);
+    
     }
 
     fclose(output_file);
