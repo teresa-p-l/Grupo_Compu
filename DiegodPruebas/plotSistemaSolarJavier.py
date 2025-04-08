@@ -55,7 +55,7 @@ def actualizar(frame):
 
 # Crear la animación
 frames_totales = len(datos['t'])
-intervalo = 10000 / frames_totales  # 60 segundos en total
+intervalo = 60000 / frames_totales  # 60 segundos en total
 ani = animation.FuncAnimation(fig, actualizar, frames=frames_totales,
                               init_func=init, interval=intervalo, blit=True)
 
