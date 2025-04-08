@@ -11,9 +11,25 @@ Para las siguientes tareas hay que especificar esto último.
 
 # Posibles tareas
 
-- Algoritmo de Verlet
+- Algoritmo de Verlet:
+    - Parámetros que coge:
+        - Posición en tiempo t
+        - Velocidad en tiempo t
+        - Número de pasos h
+    - Parámetros que suelta:
+        - Posición en tiempo t+h
+        - Velocidad en tiempo t+h
+        - aceleración en tiempo t+h
 
-- Programa de reescala
+- Fuerzas de Newton (aceleración):
+    - Parámetros que coge:
+        - Posición en tiempo t
+        - Aceleración en tiempo t
+        - Masa
+    - Parámetros que suelta:
+        - aceleración en tiempo t
+
+- Programa de reescala y reescala^-1
 
 - Programa de hacer la energía
 
