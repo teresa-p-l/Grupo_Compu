@@ -15,33 +15,32 @@
 //Los pasos son el número de pasos que queremos dar en la simulación.
 
 #define pasos 1000
+#define tiempo 10000
 #define planetas 2 //Número de planetas POR AHORA, LUEGO SE PONE BIEN COMO LO DEL DOCUMENTO Y TAL.
 
+double h=tiempo/pasos;
 
-//IMPORTANTE, TODO YA ESTÁ REESCALADO, NO HACE FALTA HACERLO AQUÍ.
-double pos[planetas][2];
-double vel[planetas][2];
-float masa[planetas]; 
-double acel[planetas][2]; //Aceleración de cada planeta en cada paso.
-
-
-
-
-
-//Primero hago la 2ª ley de Newton, calculamos a(t) a partir de r(t) y m(t).
+// Estructura para cada cuerpo
+typedef struct {
+    double rx, ry;      // Posición reescalada: r' = r / C
+    double vx, vy;      // Velocidad reescalada
+    double ax, ay;      // Aceleración reescalada
+    double m;           // Masa reescalada: m' = m / MS
+} Body;
 
 
+//Hacemos el programa de las aceleraciones pero con las estructuras. Calculamos la aceleración con Newton.
+//Partimos de que todo ya está reescalado y que los datos se leerán en otro archivo.
 
-
-void aceleracion(double pos[planetas][2], float masa[planetas]) 
+void aceleracion(Body cuerpos[]) 
 {
     double distcubo;
     double dx, dy;
     //Inicializamos la aceleración a 0 SKIPEABLE.
     for (int i=0; i<planetas; i++) 
     {
-        acel[i][0] = 0.0; 
-        acel[i][1] = 0.0; 
+        cuerpos[i].ax = 0.0;
+        cuerpos[i].ay = 0.0; 
     }
 
     //Calculamos la aceleración de cada planeta.
@@ -52,11 +51,11 @@ void aceleracion(double pos[planetas][2], float masa[planetas])
         {
             if (i != j) //No calculamos la aceleración de un planeta sobre sí mismo.
             {
-                dx = pos[i][0] - pos[j][0]; //Diferencia en x
-                dy = pos[i][1] - pos[j][1]; //Diferencia en y
+                dx = cuerpos[i].rx-cuerpos[j].rx; //Diferencia en x
+                dy = cuerpos[i].ry-cuerpos[j].ry; //Diferencia en y
                 distcubo = pow(dx*dx + dy*dy, 1.5); //Distancia al cubo
-                acel[i][0] -= masa[j]*dx/distcubo; //Aceleración en x
-                acel[i][1] -= masa[j]*dy/distcubo; //Aceleración en y
+                cuerpos[i].ax -= cuerpos[j].m*dx/distcubo; //Aceleración en x
+                cuerpos[i].ay -= cuerpos[j].m*dy/distcubo; //Aceleración en y
             }
         }
     }
@@ -64,28 +63,39 @@ void aceleracion(double pos[planetas][2], float masa[planetas])
     
 }
 
-void verlet(pos[planetas][2], vel[planetas][2], acel[planetas][2])
+
+void verlet(Body cuerpos[])
 {
-    double posnueva[planetas][2]; //Posición nueva de cada planeta.
-    double velnueva[planetas][2]; //Velocidad nueva de cada planeta.
-    double acelnueva[planetas][2]; //Aceleración nueva de cada planeta.
+    double acelvieja[planetas][2]; //Aceleración vieja de cada planeta.
+    double omega[planetas][2]; //Vector auxiliar
 
-
-
+    //Guardamos para el file PODEMOS GUARDAR TAMBIÉN POSICIÓN Y VELOCIDAD PARA EL FILE PERO ESO MEJOR EN UNA FUNCIÓN ANTERIOR A VERLET.
     for (int i=0; i<planetas; i++)
     {
-        pos[i][0] += vel[i][0] + 0.5*acel[i][0]; //Posición en x
-        pos[i][1] += vel[i][1] + 0.5*acel[i][1]; //Posición en y
-
-        vel[i][0] += acel[i][0]; //Velocidad en x
-        vel[i][1] += acel[i][1]; //Velocidad en y
-
-        pos[i][0] += 0.5*acel[i][0]; //Posición en x
-        pos[i][1] += 0.5*acel[i][1]; //Posición en y
-
-        vel[i][0] += acel[i][0]; //Velocidad en x
-        vel[i][1] += acel[i][1]; //Velocidad en y
+        acelvieja[i][0]=cuerpos[i].rx;
+        acelvieja[i][1]=cuerpos[i].ry;
     }
+    //Actualizamos posiciones y calculamos vector auxiliar omega
+    for (int i=0; i<planetas; i++)
+    {
+        cuerpos[i].rx += cuerpos[i].vx * h + 0.5 * cuerpos[i].ax * h * h;
+        cuerpos[i].ry += cuerpos[i].vy * h + 0.5 * cuerpos[i].ay * h * h;
+        omega[i][0]=cuerpos[i].vx + h/2*cuerpos[i].ax;
+        omega[i][1]=cuerpos[i].vy + h/2*cuerpos[i].ay; 
+    }
+
+    //Hemos obtenido r(t+h) y omega(t+h).
+
+    //Actualizamos las aceleraciones (a(t+h)).
+    aceleracion(cuerpos);
+
+    //Por último actualizamos las velocidades.
+    for (int i=0; i<planetas; i++)
+    {
+        cuerpos[i].vx = omega[i][0] + h/2*(cuerpos[i].ax+acelvieja[i][0]);
+        cuerpos[i].vy = omega[i][1] + h/2*(cuerpos[i].ay+acelvieja[i][1]);
+    }
+    //Con esto ya tenemos r(t+h), v(t+h) y a(t+h). Dichos parámetros se han actualizado en el cuerpo.
 }
 
 
