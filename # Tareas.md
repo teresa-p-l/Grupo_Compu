@@ -21,7 +21,7 @@ Para las siguientes tareas hay que especificar esto último.
         - Velocidad en tiempo t+h
         - aceleración en tiempo t+h
 
-- Fuerzas de Newton (aceleración):
+- Fuerzas de Newton (aceleración): -Diegod
     - Parámetros que coge:
         - Posición en tiempo t
         - Aceleración en tiempo t

@@ -121,7 +121,7 @@ int main() {
         double potential_energy = compute_potential_energy(positions, masses, num_bodies);
         double total_energy = kinetic_energy + potential_energy;
         fprintf(energy_file, "%d %lf\n", step, total_energy);
-    
+        
     }
 
     fclose(output_file);
