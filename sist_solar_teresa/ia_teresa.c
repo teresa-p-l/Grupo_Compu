@@ -3,8 +3,8 @@
 #include <math.h>
 
 #define N_BODIES 9      // Sol + 8 planetas (se escriben solo los 8 planetas)
-#define T_TOTAL 50.0  // Tiempo total de simulación en unidades reescaladas (1 unidad ~ 58.1 días)
-#define DT 0.1        // Paso temporal
+#define T_TOTAL 200.0  // Tiempo total de simulación en unidades reescaladas (1 unidad ~ 58.1 días)
+#define DT 0.1       // Paso temporal
 
 typedef struct {
     double rx, ry;    // Posición reescalada: r' = r / UA (1 UA)
