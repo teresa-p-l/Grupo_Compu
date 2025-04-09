@@ -169,6 +169,18 @@ void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo)
 
 //Ahora para calcular la energía
 
+void Energia(Body cuerpos[], int N, FILE *archivo)
+{
+    double E[N];
+    double l;
+    for (int i=1; i<N; i++)
+    {
+        l=cuerpos[i].m*(cuerpos[i].rx*cuerpos[i].vy-cuerpos[i].ry*cuerpos[i].vx);
+        E[i]=((cuerpos[i].e*cuerpos[i].e)-1)*(cuerpos[i].m*cuerpos[i].m*cuerpos[i].m)/(2*l*l);
+        fprintf(archivo, "%e\n", E[i]);
+    }
+    fprintf(archivo, "\n"); //Salto de línea para separar los pasos
+}
 
 
 int main (void)
@@ -184,14 +196,25 @@ int main (void)
         printf("Error al abrir el archivo.\n");
         return 1;
     }
+
+    FILE *fileenergia = fopen("SuperEnergia.txt", "w");
+    if (fileenergia == NULL) {
+        printf("Error al abrir el archivo.\n");
+        return 1;
+    }
+
+
     Body cuerpos[N]; // Arreglo de cuerpos
     inicializarCuerpos(cuerpos, N, archivo);
     aceleracion(cuerpos);
     for(float i=0; i<T_TOTAL; i=i+h)
     {   
         verlet(cuerpos, file);
+        Energia(cuerpos, N, fileenergia);
     }
     fclose(file);
+    fclose(fileenergia);
+    fclose(archivo);
 
     return 0;
 }
