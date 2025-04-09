@@ -167,6 +167,10 @@ void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo)
     cuerpos[0].vy = 0.0;
 }
 
+//Ahora para calcular la energía
+
+
+
 int main (void)
 {
     FILE *archivo = fopen("inicialreescalado.txt", "r");

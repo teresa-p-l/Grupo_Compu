@@ -176,7 +176,6 @@ void Energia(Body cuerpos[], int N, FILE *archivo)
     fprintf(archivo, "%e\n", E[i]);
     }
 
-}
 
 double EnergiaAlternativa(Body cuerpos[], int N, FILE *archivo)
 {   
@@ -221,14 +220,14 @@ int main(void)
     int N,i; N=9; Body cuerpos[N];
 
     //Abrimos los 3 files, el de entrada, salida y el de energía.
-    FILE *archivo = fopen("c:/Users/User/Documents/Fisica_compu/Compu/Grupo_Compu/SISTEMAFINAL/initial.txt", "r");
+    FILE *archivo = fopen("initial.txt", "r");
     if (archivo == NULL) {
         printf("Error al abrir el archivo.\n");
         return 1;
     }
     
     
-    FILE *archivoSalida = fopen("c:/Users/User/Documents/Fisica_compu/Compu/Grupo_Compu/SISTEMAFINAL/output.txt", "w");
+    FILE *archivoSalida = fopen("output.txt", "w");
     if (archivoSalida == NULL) {
         printf("Error al abrir el archivo de salida.\n");
         fclose(archivo);
@@ -236,7 +235,7 @@ int main(void)
     }
 
 
-    FILE *archivoEnergia = fopen("c:/Users/User/Documents/Fisica_compu/Compu//Grupo_Compu/SISTEMAFINAL/energia.txt", "w");
+    FILE *archivoEnergia = fopen("energia.txt", "w");
     if (archivoEnergia == NULL) {
         printf("Error al abrir el archivo de energía.\n");
         fclose(archivo);
