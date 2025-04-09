@@ -59,7 +59,7 @@ for i in range(n_extra):
 
 
 # Crear la figura y los ejes
-fig, (ax_orbit, ax_energy) = plt.subplots(2, 1, figsize=(6, 8))
+fig, (ax_orbit, ax_energy) = plt.subplots(1, 2, figsize=(16, 8))
 ax_orbit.axis("equal")
 ax_orbit.set_xlim(x_min, x_max)
 ax_orbit.set_ylim(y_min, y_max)
