@@ -24,17 +24,46 @@ void reescalamientoinverso(double *rx, double *ry, double *t, double *m)
     *m= *m*MS; 
 }
 
+double Energia(double epsilon, double m, double rx, double ry, double vx, double vy)
+{   
+    double E;
+    double l;
+
+    l=m*(rx*vy - ry*vx);
+
+    E=((epsilon*epsilon)-1)*(G*G*MS*MS*m*m*m)/(2*l*l);
+    return E;
+}
+
+double EnergiaAlternativa(double m, double rx, double ry, double vx, double vy)
+{   
+    double E;
+    double v;
+    double r;
+
+    v=sqrt(vx*vx+vy*vy);
+    r=sqrt(rx*rx+ry*ry);
+
+    E=(m*v*v)/2 - (G*MS*m)/r;
+    return E;
+}
 
 int main(void)
-{  double x,y,t,m;
+{  double x,y,t,m,vx,vy,e;
     
-   x= 4500000000;
-   y= 4500000000;
+   x= 4.495*pow(10, 12);
+   y= 0;
    t=180000000000;
+   e=0.009;
+   vx=0;
+   vy=5433;
    m=1.024*pow(10, 26);
    
    reescalamiento(&x,&y,&t,&m);
    printf("x = %lf, y = %lf, t = %lf, m = %lf\n", x, y, t, m);
    reescalamientoinverso(&x,&y,&t,&m);
    printf("x = %lf, y = %lf, t = %lf, m = %lf\n", x, y, t, m);
+
+    printf("E = %lf\n", Energia(e, m, x, y, vx, vy));
+    printf("E = %lf\n", EnergiaAlternativa(m, x, y, vx, vy));
 }
