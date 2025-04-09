@@ -4,7 +4,13 @@
 
 //Abrimos el archivo
 
-archivo = fopen("c:/Users/User/Documents/Fisica_compu/Compu/Grupo_Compu/SistemaSolar/initial.txt", "r");
+/*
+ ==================================
+    EL ARCHIVO TIENE EL FORMATO: 
+    MASA, rx, vy, e
+    rx y ry son las coordenadas del cuerpo en el sistema solar, vy la velocidad eje y, e es la excentricidad.
+ ==================================
+*/
 
 // Estructura para cada cuerpo
 typedef struct {
@@ -13,14 +19,15 @@ typedef struct {
     double ax, ay;      // Aceleración reescalada
     double m;           // Masa reescalada: m' = m / MS
     double e;          // Excentricidad
+    double t;          // Período reescalado:
 } Body;
 
 
 //DEFINIMOS AHORA LAS CONSTANTES
 
 #define pasos 1000
-#define tiempo 10000
-#define planetas 2 //Número de planetas
+#define tiempo 1000000
+#define planetas 9 //Número de planetas
 
 //por si hay alguna inconsistencia en el número de planetas, ponemos una variable como N
 
@@ -36,28 +43,33 @@ double h=tiempo/pasos; //Paso de tiempo, que es el tiempo total dividido por el 
 #define MS 1.99e30        // Masa del Sol en kg
 #define C 1.496e11 
 
-void reescalamiento(double *rx, double *ry, double *t, double *m)
-{
+void reescalamiento(Body cuerpos[], int N)
+{   
+    int i; 
 
-    *rx = *rx/C;
-    *ry = *ry/C;
-    *t = *t*sqrt(G*MS/(C*C*C));
-    *m= *m/MS; 
+    for (i=0; i<N; i++)
+    {
+    cuerpos[i].rx = cuerpos[i].rx/C;
+    cuerpos[i].ry = cuerpos[i].ry/C;
+    cuerpos[i].vx = cuerpos[i].vx / sqrt(G * MS / C); 
+    cuerpos[i].vy = cuerpos[i].vy / sqrt(G * MS / C); 
+    cuerpos[i].t = cuerpos[i].t*sqrt(G*MS/(C*C*C));
+    cuerpos[i].m= cuerpos[i].m/MS; 
+    }
 }
 
-void reescalamientoinverso(double *rx, double *ry, double *t, double *m)
+void reescalamientoinverso(Body cuerpos[], int N)
 {
+    int i; 
 
-    *rx = *rx*C;
-    *ry = *ry*C;
-    *t = *t/sqrt(G*MS/(C*C*C));
-    *m= *m*MS; 
+    for (i=0; i<N; i++)
+    {
+    cuerpos[i].rx = cuerpos[i].rx*C;
+    cuerpos[i].ry = cuerpos[i].ry*C;
+    cuerpos[i].t = cuerpos[i].t/sqrt(G*MS/(C*C*C));
+    cuerpos[i].m = cuerpos[i].m*MS; 
+    }
 }
-
-
-//FUNCION DE INICIALIZACIÓN:
-
-
 
 
 //FUNCION DE ACELERACIÓN:
@@ -65,12 +77,6 @@ void aceleracion(Body cuerpos[])
 {
     double distcubo;
     double dx, dy;
-    //Inicializamos la aceleración a 0 SKIPEABLE.
-    for (int i=0; i<planetas; i++) 
-    {
-        cuerpos[i].ax = 0.0;
-        cuerpos[i].ay = 0.0; 
-    }
 
     //Calculamos la aceleración de cada planeta.
 
@@ -83,13 +89,11 @@ void aceleracion(Body cuerpos[])
                 dx = cuerpos[i].rx-cuerpos[j].rx; //Diferencia en x
                 dy = cuerpos[i].ry-cuerpos[j].ry; //Diferencia en y
                 distcubo = pow(dx*dx + dy*dy, 1.5); //Distancia al cubo
-                cuerpos[i].ax -= cuerpos[j].m*dx/distcubo; //Aceleración en x
-                cuerpos[i].ay -= cuerpos[j].m*dy/distcubo; //Aceleración en y
+                cuerpos[i].ax -= G*cuerpos[j].m*dx/distcubo; //Aceleración en x
+                cuerpos[i].ay -= G*cuerpos[j].m*dy/distcubo; //Aceleración en y
             }
         }
-    }
-    return;
-    
+    }    
 }
 
 
@@ -98,17 +102,9 @@ void aceleracion(Body cuerpos[])
 
 
 
-void verlet(Body cuerpos[], Body historial[][planetas], int paso, FILE *file)
+void verlet(Body cuerpos[], FILE *file)
 {
-    for (int i=0; i<planetas; i++)
-    {
-        historial[paso][i].rx=cuerpos[i].rx;
-        historial[paso][i].ry=cuerpos[i].ry;
-        historial[paso][i].vx=cuerpos[i].vx;
-        historial[paso][i].vy=cuerpos[i].vy;
-        historial[paso][i].ax=cuerpos[i].ax;
-        historial[paso][i].ay=cuerpos[i].ay;
-    }
+    double old_ax[planetas], old_ay[planetas]; //Vectores auxiliares para guardar la aceleración anterior
     double omega[planetas][2]; //Vector auxiliar
 
     //Guardamos para el file PODEMOS GUARDAR TAMBIÉN POSICIÓN Y VELOCIDAD PARA EL FILE PERO ESO MEJOR EN UNA FUNCIÓN ANTERIOR A VERLET.
@@ -130,11 +126,35 @@ void verlet(Body cuerpos[], Body historial[][planetas], int paso, FILE *file)
     //Por último actualizamos las velocidades.
     for (int i=0; i<planetas; i++)
     {
-        cuerpos[i].vx = omega[i][0] + h/2*(cuerpos[i].ax+historial[paso][i].ax);
-        cuerpos[i].vy = omega[i][1] + h/2*(cuerpos[i].ay+historial[paso][i].ay);
+        cuerpos[i].vx = omega[i][0] + h/2*cuerpos[i].ax;
+        cuerpos[i].vy = omega[i][1] + h/2*cuerpos[i].ay;
     }
     //Con esto ya tenemos r(t+h), v(t+h) y a(t+h). Dichos parámetros se han actualizado en el cuerpo.
 
+    //Vamos a guardar los datos en el archivo de salida.
+
+    /*
+    =====================================
+    FORMATO DEL ARCHIVO DE SALIDA:
+    1rx,1ry,1vx,1vy
+    2rx,2ry,2vx,2vy
+    .
+    .
+    .
+    Nrx,Nry,Nvx,Nvy
+    [salto de línea para separar los pasos]
+    1rx,1ry,1vx,1vy
+    ...
+
+    =====================================
+    
+    */
+    for (int i=0; i<planetas; i++)
+    {
+        fprintf(file, "%lf, %lf, %lf, %lf\n", cuerpos[i].rx, cuerpos[i].ry, cuerpos[i].vx, cuerpos[i].vy);
+
+    }
+    fprintf(file, "\n"); //Salto de línea para separar los pasos
 
 }
 
@@ -160,7 +180,7 @@ void Energia(Body cuerpos[], int N, FILE *archivo)
 
 }
 
-double EnergiaAlternativa(Body cuerpos[], int N)
+double EnergiaAlternativa(Body cuerpos[], int N, FILE *archivo)
 {   
     double E[N];
     double v;
@@ -179,13 +199,15 @@ double EnergiaAlternativa(Body cuerpos[], int N)
 
 
 
+//FUNCION PARA INICIALIZAR LOS CUERPOS:
+
 void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo) 
 {
     int i; 
 
     for(i=0; i<N; i++){
         fscanf(archivo, "%lf %lf %lf %lf ", 
-            &cuerpos[i].m, &cuerpos[i].rx, &cuerpos[i].ry, &cuerpos[i].e);
+            &cuerpos[i].m, &cuerpos[i].rx, &cuerpos[i].vy, &cuerpos[i].e);
     }
 }
 
@@ -201,22 +223,70 @@ int main(void)
 
     // Inicializar los cuerpos
     
-    int N,i; 
-    FILE *archivo;
- 
-    N=9;
- 
-    Body cuerpos[N];
-   
+    int N,i; N=9; Body cuerpos[N];
+
+    //Abrimos los 3 files, el de entrada, salida y el de energía.
+    FILE *archivo = fopen("c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/initial.txt", "r");
+    if (archivo == NULL) {
+        printf("Error al abrir el archivo.\n");
+        return 1;
+    }
+    
+    
+    FILE *archivoSalida = fopen("c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/output.txt", "w");
+    if (archivoSalida == NULL) {
+        printf("Error al abrir el archivo de salida.\n");
+        fclose(archivo);
+        return 1;
+    }
+
+
+    FILE *archivoEnergia = fopen("c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/energia.txt", "w");
+    if (archivoEnergia == NULL) {
+        printf("Error al abrir el archivo de energía.\n");
+        fclose(archivo);
+        return 1;
+    }
    
    inicializarCuerpos(cuerpos, N, archivo);
 
-   for(i=0; i<N; i++){
-    printf( "m = %lf, rx = %lf, ry = %lf, e= %lf,\n", 
-        cuerpos[i].m, cuerpos[i].rx, cuerpos[i].ry, cuerpos[i].e);
+   
+
+    //Reescalamos los cuerpos
+    /*reescalamiento(cuerpos, N);
+    for(i=0; i<N; i++){
+        printf( "m = %lf, rx = %lf, vy = %lf, e= %lf,\n", 
+            cuerpos[i].m, cuerpos[i].rx, cuerpos[i].vy, cuerpos[i].e);
+        }
+
+    */
+
+    //Implementamos el algoritmo de Verlet
+    // Inicializamos las posiciones y velocidades de los cuerpos
+    //Calculamos la aceleración inicial
+    //Inicializamos la aceleración a 0 SKIPEABLE.
+    for (int i=0; i<planetas; i++) 
+    {
+        cuerpos[i].ax = 0.0;
+        cuerpos[i].ay = 0.0; 
+     }
+    aceleracion(cuerpos);
+
+    //Saco por pantalla la aceleración inicial de estos cuerpos
+    for (int i=0; i<N; i++)
+    {
+        printf( "ax = %lf, ay = %lf\n", 
+            cuerpos[i].ax, cuerpos[i].ay);
+    }
+
+    for (int i=0; i < pasos; i++)
+    {
+        verlet(cuerpos, archivoSalida);
     }
 
     fclose(archivo);
+    fclose(archivoSalida);
+    fclose(archivoEnergia);
 
 
     /*=================================
