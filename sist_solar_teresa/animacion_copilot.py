@@ -4,7 +4,7 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.patches import Circle
 import matplotlib.cm as cm
 
-# Parámetros
+# Parámetros de la animación de los pkanetas
 file_in = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/sist_solar_teresa/planetas"  # Ruta del fichero de datos
 file_out = "planetas"  # Nombre del fichero de salida (sin extensión)
 x_min, x_max = -50, 50  # Límites de los ejes X
