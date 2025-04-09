@@ -15,7 +15,9 @@ typedef struct {
 
 
 void reescalamiento(*cuerpos[], int N)
-{
+{   
+    int i; 
+
     for i=0; i<N; i++){
     *cuerpos[i].rx = *cuerpos[i].rx/C;
     *cuerpos[i].ry = *cuerpos[i].ry/C;
@@ -26,6 +28,8 @@ void reescalamiento(*cuerpos[], int N)
 
 void reescalamientoinverso(*cuerpos[], int N)
 {
+    int i; 
+
     for i=0; i<N; i++){
     *cuerpos[i].rx = *cuerpos[i].rx*C;
     *cuerpos[i].ry = *cuerpos[i].ry*C;
@@ -34,18 +38,21 @@ void reescalamientoinverso(*cuerpos[], int N)
     }
 }
 
-double Energia(cuerpos[], int N)
+void Energia(cuerpos[], int N, FILE *archivo)
 {   
     double E[N];
     double l;
+    int i; 
 
     for(int i=0; i<N; i++){
     
     l=cuerpos[i].m*(cuerpos[i].rx*vy - cuerpos[i].ry*cuerpos[i].vx);
 
-    E[]=((cuerpos[i].e*cuerpos[i].e)-1)*(G*G*MS*MS*cuerpos[i].m*cuerpos[i].m*cuerpos[i].m)/(2*l*l);
+    E[i]=((cuerpos[i].e*cuerpos[i].e)-1)*(G*G*MS*MS*cuerpos[i].m*cuerpos[i].m*cuerpos[i].m)/(2*l*l);
+
+    fprintf(archivo, "%e\n", E[i]);
     }
-    return E[];
+
 }
 
 double EnergiaAlternativa(Body cuerpos[], int N)
@@ -53,14 +60,16 @@ double EnergiaAlternativa(Body cuerpos[], int N)
     double E[N];
     double v;
     double r;
+    int i; 
     
     for(int i=0; i<N; i++){
     v=sqrt(cuerpos[i].vx*cuerpos[i].vx+cuerpos[i]vy*cuerpos[i].vy);
     r=sqrt(cuerpos[i].rx*cuerpos[i].rx+cuerpos[i].ry*cuerpos[i].ry);
 
     E[i]=(cuerpos[i].m*v*v)/2 - (G*MS*cuerpos[i].m)/r;
+    
+    fprintf(archivo, "%e\n", E[i]);
     }
-    return E[i];
 }
 
 
