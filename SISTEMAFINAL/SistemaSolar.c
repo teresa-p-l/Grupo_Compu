@@ -25,8 +25,8 @@ typedef struct {
 
 //DEFINIMOS AHORA LAS CONSTANTES
 
-#define pasos 1000
-#define tiempo 10000000
+#define pasos 10000
+#define tiempo 100000
 #define planetas 9 //Número de planetas
 
 //por si hay alguna inconsistencia en el número de planetas, ponemos una variable como N
@@ -34,7 +34,6 @@ typedef struct {
 int N = planetas; //Número de planetas, por si acaso.
 
 double h=tiempo/pasos; //Paso de tiempo, que es el tiempo total dividido por el número de pasos.
-
 
 
 //FUNCION DE REESCALAMIENTO: DEFINIMOS LAS CONSTANTES Y HACEMOS LA FUNCIÓN
@@ -98,9 +97,6 @@ void aceleracion(Body cuerpos[])
 
 
 //PROCEDIMIENTO DE VERLET:
-
-
-
 
 void verlet(Body cuerpos[], FILE *file)
 {
@@ -207,12 +203,9 @@ void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo)
 
     for(i=0; i<N; i++){
         fscanf(archivo, "%lf %lf %lf %lf ", 
-            &cuerpos[i].m, &cuerpos[i].rx, &cuerpos[i].vy, &cuerpos[i].e);
+            &cuerpos[i].m, &cuerpos[i].rx, &cuerpos[i].ry, &cuerpos[i].e);
     }
 }
-
-
-
 
 
 //PROGRAMA PRINCIPAL:
@@ -250,8 +243,6 @@ int main(void)
    
    inicializarCuerpos(cuerpos, N, archivo);
 
-   
-
     //Reescalamos los cuerpos
     /*reescalamiento(cuerpos, N);
     for(i=0; i<N; i++){
@@ -264,11 +255,15 @@ int main(void)
     //Implementamos el algoritmo de Verlet
     // Inicializamos las posiciones y velocidades de los cuerpos
     //Calculamos la aceleración inicial
-    //Inicializamos la aceleración a 0 SKIPEABLE.
+    //Inicializamos la aceleración a 0 SKIPEABLE. 
+    //También ponemos la velocidad inicial de estos planetas para seguir órbitas "circulares"
     for (int i=0; i<planetas; i++) 
     {
         cuerpos[i].ax = 0.0;
-        cuerpos[i].ay = 0.0; 
+        cuerpos[i].ay = 0.0;
+        
+        if(i!=0)
+            cuerpos[i].vy= sqrt(G*MS/cuerpos[i].rx); // Velocidad inicial en y para órbita circular 
      }
     aceleracion(cuerpos);
 
