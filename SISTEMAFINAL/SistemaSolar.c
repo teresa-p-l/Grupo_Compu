@@ -132,6 +132,33 @@ void verlet(Body cuerpos[])
 
 
 
+//Programa para calcular la energía de un cuerpo en el sistema solar. LO HACEMOS DE 2 FORMAS DISTINTAS
+
+double Energia(double epsilon, double m, double rx, double ry, double vx, double vy)
+{   
+    double E;
+    double l;
+
+    l=m*(rx*vy - ry*vx);
+
+    E=((epsilon*epsilon)-1)*(G*G*MS*MS*m*m*m)/(2*l*l);
+    return E;
+}
+
+double EnergiaAlternativa(double m, double rx, double ry, double vx, double vy)
+{   
+    double E;
+    double v;
+    double r;
+
+    v=sqrt(vx*vx+vy*vy);
+    r=sqrt(rx*rx+ry*ry);
+
+    E=(m*v*v)/2 - (G*MS*m)/r;
+    return E;
+}
+
+
 
 //PROGRAMA PRINCIPAL:
 
