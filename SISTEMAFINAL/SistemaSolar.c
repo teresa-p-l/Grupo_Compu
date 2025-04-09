@@ -10,6 +10,7 @@ typedef struct {
     double vx, vy;      // Velocidad reescalada
     double ax, ay;      // Aceleración reescalada
     double m;           // Masa reescalada: m' = m / MS
+    double e;          // Excentricidad
 } Body;
 
 
@@ -96,18 +97,22 @@ void aceleracion(Body cuerpos[])
 
 
 
-void verlet(Body cuerpos[])
+void verlet(Body cuerpos[], Body historial[][planetas], int paso, FILE *file)
 {
-    double acelvieja[planetas][2]; //Aceleración vieja de cada planeta.
+    for (int i=0; i<planetas; i++)
+    {
+        historial[paso][i].rx=cuerpos[i].rx;
+        historial[paso][i].ry=cuerpos[i].ry;
+        historial[paso][i].vx=cuerpos[i].vx;
+        historial[paso][i].vy=cuerpos[i].vy;
+        historial[paso][i].ax=cuerpos[i].ax;
+        historial[paso][i].ay=cuerpos[i].ay;
+    }
     double omega[planetas][2]; //Vector auxiliar
 
     //Guardamos para el file PODEMOS GUARDAR TAMBIÉN POSICIÓN Y VELOCIDAD PARA EL FILE PERO ESO MEJOR EN UNA FUNCIÓN ANTERIOR A VERLET.
-    for (int i=0; i<planetas; i++)
-    {
-        acelvieja[i][0]=cuerpos[i].rx;
-        acelvieja[i][1]=cuerpos[i].ry;
-    }
     //Actualizamos posiciones y calculamos vector auxiliar omega
+
     for (int i=0; i<planetas; i++)
     {
         cuerpos[i].rx += cuerpos[i].vx * h + 0.5 * cuerpos[i].ax * h * h;
@@ -124,8 +129,8 @@ void verlet(Body cuerpos[])
     //Por último actualizamos las velocidades.
     for (int i=0; i<planetas; i++)
     {
-        cuerpos[i].vx = omega[i][0] + h/2*(cuerpos[i].ax+acelvieja[i][0]);
-        cuerpos[i].vy = omega[i][1] + h/2*(cuerpos[i].ay+acelvieja[i][1]);
+        cuerpos[i].vx = omega[i][0] + h/2*(cuerpos[i].ax+historial[paso][i].ax);
+        cuerpos[i].vy = omega[i][1] + h/2*(cuerpos[i].ay+historial[paso][i].ay);
     }
     //Con esto ya tenemos r(t+h), v(t+h) y a(t+h). Dichos parámetros se han actualizado en el cuerpo.
 }
@@ -134,30 +139,21 @@ void verlet(Body cuerpos[])
 
 //Programa para calcular la energía de un cuerpo en el sistema solar. LO HACEMOS DE 2 FORMAS DISTINTAS
 
-double Energia(double epsilon, double m, double rx, double ry, double vx, double vy)
-{   
-    double E;
-    double l;
 
-    l=m*(rx*vy - ry*vx);
 
-    E=((epsilon*epsilon)-1)*(G*G*MS*MS*m*m*m)/(2*l*l);
-    return E;
+
+
+
+//ABRIMOS EL FILE
+
+void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo) {
+    int i; 
+
+    for(i=0; i<N; i++){
+        fscanf(archivo, "%lf %lf %lf %lf ", 
+            &cuerpos[i].m, &cuerpos[i].rx, &cuerpos[i].ry, &cuerpos[i].e);
+    }
 }
-
-double EnergiaAlternativa(double m, double rx, double ry, double vx, double vy)
-{   
-    double E;
-    double v;
-    double r;
-
-    v=sqrt(vx*vx+vy*vy);
-    r=sqrt(rx*rx+ry*ry);
-
-    E=(m*v*v)/2 - (G*MS*m)/r;
-    return E;
-}
-
 
 
 //PROGRAMA PRINCIPAL:
