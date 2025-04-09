@@ -26,7 +26,7 @@ typedef struct {
 //DEFINIMOS AHORA LAS CONSTANTES
 
 #define pasos 1000
-#define tiempo 1000000
+#define tiempo 10000000
 #define planetas 9 //Número de planetas
 
 //por si hay alguna inconsistencia en el número de planetas, ponemos una variable como N

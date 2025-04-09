@@ -1,38 +1,25 @@
 #include <stdio.h>
+#include <string.h>
 #include <math.h> //Necesario para la potencia
 
-//Algoritmo de Verlet.
-
-//Tenemos tres vectores: posición, velocidad y aceleración.
-//Las vectores son bidimensionales y estarán el el formato:
-//x1 y1 x2 y2 x3 y3 ... xn yn
-//Lo mismo pasa con las velocidades y aceleraciones.
-
-//Las masas estarán en un vector unidimensional.
-
-//Definimos los vectores
-
-//Los pasos son el número de pasos que queremos dar en la simulación.
-
-#define pasos 1000
-#define tiempo 10000
-#define planetas 2 //Número de planetas POR AHORA, LUEGO SE PONE BIEN COMO LO DEL DOCUMENTO Y TAL.
-
-double h=tiempo/pasos;
-
-
-// Estructura para cada cuerpo
 typedef struct {
     double rx, ry;      // Posición reescalada: r' = r / C
     double vx, vy;      // Velocidad reescalada
     double ax, ay;      // Aceleración reescalada
     double m;           // Masa reescalada: m' = m / MS
+    double e;          // Excentricidad
+    double t;          // Período reescalado:
 } Body;
 
+#define G 6.67e-11        // Constante de gravitación en N·m²/kg² (no usada directamente aquí)
+#define MS 1.99e30        // Masa del Sol en kg
+#define C 1.496e11        // Unidad de distancia: distancia Tierra-Sol en metros
 
-//Hacemos el programa de las aceleraciones pero con las estructuras. Calculamos la aceleración con Newton.
-//Partimos de que todo ya está reescalado y que los datos se leerán en otro archivo.
+#define planetas 2               // Número de cuerpos (por ejemplo, Sol y Tierra)
+#define T_TOTAL 10.0    // Tiempo total de simulación (en unidades reescaladas)
+#define h 0.01           // Paso temporal
 
+int N = planetas; //Número de planetas, por si acaso.
 void aceleracion(Body cuerpos[]) 
 {
     double distcubo;
@@ -65,7 +52,7 @@ void aceleracion(Body cuerpos[])
 }
 
 
-void verlet(Body cuerpos[])
+void verlet(Body cuerpos[], FILE *file)
 {
     double acelvieja[planetas][2]; //Aceleración vieja de cada planeta.
     double omega[planetas][2]; //Vector auxiliar
@@ -90,13 +77,54 @@ void verlet(Body cuerpos[])
         cuerpos[i].vy = omega[i][1] + h/2*cuerpos[i].ay;
     }
     //Con esto ya tenemos r(t+h), v(t+h) y a(t+h). Dichos parámetros se han actualizado en el cuerpo.
+    for (int i=0; i<planetas; i++)
+    {
+        fprintf(file, "%lf, %lf, %lf, %lf\n", cuerpos[i].rx, cuerpos[i].ry, cuerpos[i].vx, cuerpos[i].vy);
+
+    }
+    fprintf(file, "\n"); //Salto de línea para separar los pasos
+}
+
+void inicializarCuerpos(Body cuerpos[]) {
+    // Cuerpo 0: Sol (centrado en el origen)
+    cuerpos[0].rx = 0.0;
+    cuerpos[0].ry = 0.0;
+    cuerpos[0].vx = 0.0;
+    cuerpos[0].vy = 0.0;
+    cuerpos[0].m  = 1.0;   // m' = 1 (masa solar)
+
+    // Cuerpo 1: Planeta (por ejemplo, la Tierra reescalada)
+    cuerpos[1].rx = 1.0;   // 1 UA = 1 en unidades reescaladas
+    cuerpos[1].ry = 0.0;
+    cuerpos[1].vx = 0.0;
+    cuerpos[1].vy = sqrt(1.0 / fabs(cuerpos[1].rx)); // velocidad orbital circular
+    cuerpos[1].m  = 3.0e-6;  // Masa reescalada de la Tierra
 }
 
 
-int main(void)
+int main (void)
 {
-printf("Helloworld");
-return 0;
+    FILE *archivo = fopen("initial.txt", "r");
+    if (archivo == NULL) {
+        printf("Error al abrir el archivo.\n");
+        return 1;
+    }
+
+    FILE *file = fopen("SALIDA.txt", "w");
+    if (file == NULL) {
+        printf("Error al abrir el archivo.\n");
+        return 1;
+    }
+    Body cuerpos[N]; // Arreglo de cuerpos
+    inicializarCuerpos(cuerpos);
+    aceleracion(cuerpos);
+    for(float i=0; i<T_TOTAL; i=i+h)
+    {   
+        verlet(cuerpos, file);
+    }
+    fclose(file);
+
+    return 0;
 }
 
 
