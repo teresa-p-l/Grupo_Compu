@@ -14,12 +14,12 @@
 
 // Estructura para cada cuerpo
 typedef struct {
-    double rx, ry;      // Posición reescalada: r' = r / C
-    double vx, vy;      // Velocidad reescalada
-    double ax, ay;      // Aceleración reescalada
-    double m;           // Masa reescalada: m' = m / MS
-    double e;          // Excentricidad
-    double t;          // Período reescalado:
+    long double rx, ry;      // Posición reescalada: r' = r / C
+    long double vx, vy;      // Velocidad reescalada
+    long double ax, ay;      // Aceleración reescalada
+    long double m;           // Masa reescalada: m' = m / MS
+    long double e;          // Excentricidad
+    long double t;          // Período reescalado:
 } Body;
 
 
@@ -198,7 +198,7 @@ double EnergiaAlternativa(Body cuerpos[], int N, FILE *archivo)
 //FUNCION PARA INICIALIZAR LOS CUERPOS:
 
 void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo) 
-{
+{   
     int i; 
 
     for(i=0; i<N; i++){
@@ -213,7 +213,7 @@ void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo)
 int main(void)
 {
     printf("Hello world\n");
-
+    printf(m[1]);
     // Inicializar los cuerpos
     
     int N,i; N=9; Body cuerpos[N];
