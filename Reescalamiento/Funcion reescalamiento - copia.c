@@ -9,26 +9,29 @@
 typedef struct {
     double rx, ry;      // Posición 
     double e;           // excentricidad
-    double m;           // Masa 
+    double m;          // Masa
+    double t;          // Perioso
 } Body;
 
 
-void reescalamiento(double *rx, double *ry, double *t, double *m)
+void reescalamiento(*cuerpos[], int N)
 {
-
-    *rx = *rx/C;
-    *ry = *ry/C;
-    *t = *t*sqrt(G*MS/(C*C*C));
-    *m= *m/MS; 
+    for i=0; i<N; i++){
+    *cuerpos[i].rx = *cuerpos[i].rx/C;
+    *cuerpos[i].ry = *cuerpos[i].ry/C;
+    *cuerpos[i].t = *cuerpos[i].t*sqrt(G*MS/(C*C*C));
+    *cuerpos[i].m= *cuerpos[i].m/MS; 
+    }
 }
 
-void reescalamientoinverso(double *rx, double *ry, double *t, double *m)
+void reescalamientoinverso(*cuerpos[], int N)
 {
-
-    *rx = *rx*C;
-    *ry = *ry*C;
-    *t = *t/sqrt(G*MS/(C*C*C));
-    *m= *m*MS; 
+    for i=0; i<N; i++){
+    *cuerpos[i].rx = *cuerpos[i].rx*C;
+    *cuerpos[i].ry = *cuerpos[i].ry*C;
+    *cuerpos[i].t = *cuerpos[i].t/sqrt(G*MS/(C*C*C));
+    *cuerpos[i].m= *cuerpos[i].m*MS; 
+    }
 }
 
 double Energia(cuerpos[], int N)
@@ -36,13 +39,13 @@ double Energia(cuerpos[], int N)
     double E[N];
     double l;
 
-    for (for(int i=0; i<N; i++){
+    for(int i=0; i<N; i++){
     
     l=cuerpos[i].m*(cuerpos[i].rx*vy - cuerpos[i].ry*cuerpos[i].vx);
 
-    E=((epsilon*epsilon)-1)*(G*G*MS*MS*m*m*m)/(2*l*l);
+    E[]=((cuerpos[i].e*cuerpos[i].e)-1)*(G*G*MS*MS*cuerpos[i].m*cuerpos[i].m*cuerpos[i].m)/(2*l*l);
     }
-    return E;
+    return E[];
 }
 
 double EnergiaAlternativa(Body cuerpos[], int N)
