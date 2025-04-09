@@ -2,7 +2,9 @@
 #include <string.h>
 #include <math.h> //Necesario para la potencia
 
+//Abrimos el archivo
 
+archivo = fopen("c:/Users/User/Documents/Fisica_compu/Compu/Grupo_Compu/SistemaSolar/initial.txt", "r");
 
 // Estructura para cada cuerpo
 typedef struct {
@@ -33,7 +35,6 @@ double h=tiempo/pasos; //Paso de tiempo, que es el tiempo total dividido por el 
 #define G 6.67e-11        // Constante de gravitación en N·m²/kg² (no usada directamente aquí)
 #define MS 1.99e30        // Masa del Sol en kg
 #define C 1.496e11 
-
 
 void reescalamiento(double *rx, double *ry, double *t, double *m)
 {
@@ -133,6 +134,8 @@ void verlet(Body cuerpos[], Body historial[][planetas], int paso, FILE *file)
         cuerpos[i].vy = omega[i][1] + h/2*(cuerpos[i].ay+historial[paso][i].ay);
     }
     //Con esto ya tenemos r(t+h), v(t+h) y a(t+h). Dichos parámetros se han actualizado en el cuerpo.
+
+
 }
 
 
@@ -140,13 +143,44 @@ void verlet(Body cuerpos[], Body historial[][planetas], int paso, FILE *file)
 //Programa para calcular la energía de un cuerpo en el sistema solar. LO HACEMOS DE 2 FORMAS DISTINTAS
 
 
+void Energia(Body cuerpos[], int N, FILE *archivo)
+{   
+    double E[N];
+    double l;
+    int i; 
+
+    for(int i=0; i<N; i++){
+    
+    l=cuerpos[i].m*(cuerpos[i].rx*cuerpos[i].vy - cuerpos[i].ry*cuerpos[i].vx);
+
+    E[i]=((cuerpos[i].e*cuerpos[i].e)-1)*(G*G*MS*MS*cuerpos[i].m*cuerpos[i].m*cuerpos[i].m)/(2*l*l);
+
+    fprintf(archivo, "%e\n", E[i]);
+    }
+
+}
+
+double EnergiaAlternativa(Body cuerpos[], int N)
+{   
+    double E[N];
+    double v;
+    double r;
+    int i; 
+    
+    for(int i=0; i<N; i++){
+    v=sqrt(cuerpos[i].vx*cuerpos[i].vx+cuerpos[i].vy*cuerpos[i].vy);
+    r=sqrt(cuerpos[i].rx*cuerpos[i].rx+cuerpos[i].ry*cuerpos[i].ry);
+
+    E[i]=(cuerpos[i].m*v*v)/2 - (G*MS*cuerpos[i].m)/r;
+    
+    fprintf(archivo, "%e\n", E[i]);
+    }
+}
 
 
 
-
-//ABRIMOS EL FILE
-
-void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo) {
+void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo) 
+{
     int i; 
 
     for(i=0; i<N; i++){
@@ -154,6 +188,9 @@ void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo) {
             &cuerpos[i].m, &cuerpos[i].rx, &cuerpos[i].ry, &cuerpos[i].e);
     }
 }
+
+
+
 
 
 //PROGRAMA PRINCIPAL:
@@ -164,6 +201,23 @@ int main(void)
 
     // Inicializar los cuerpos
     
+    int N,i; 
+    FILE *archivo;
+ 
+    N=9;
+ 
+    Body cuerpos[N];
+   
+   
+   inicializarCuerpos(cuerpos, N, archivo);
+
+   for(i=0; i<N; i++){
+    printf( "m = %lf, rx = %lf, ry = %lf, e= %lf,\n", 
+        cuerpos[i].m, cuerpos[i].rx, cuerpos[i].ry, cuerpos[i].e);
+    }
+
+    fclose(archivo);
+
 
     /*=================================
     
@@ -171,11 +225,8 @@ int main(void)
     
     ==================================*/
 
-
-
     // Calculamos las aceleraciones iniciales
     //aceleracion(cuerpos);
-
 
     return 0;
 }
