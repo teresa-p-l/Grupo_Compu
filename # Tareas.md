@@ -25,10 +25,10 @@ Para las siguientes tareas hay que especificar esto último.
 
 - Programa de reescala y reescala^-1 --Miguel
 
-- Programa de hacer la energía
+- Programa de hacer la energía --Miguel
 
-- Plotear los planetas, la energía y excentricidad
+- Plotear los planetas, la energía y excentricidad --Teresa
 
-- Optimizar con openMP ya que estamos en C.
+- Optimizar con openMP ya que estamos en C. --Javier 
 
 

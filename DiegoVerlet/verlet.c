@@ -20,6 +20,7 @@
 
 double h=tiempo/pasos;
 
+
 // Estructura para cada cuerpo
 typedef struct {
     double rx, ry;      // Posición reescalada: r' = r / C
