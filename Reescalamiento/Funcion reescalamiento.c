@@ -6,6 +6,13 @@
 #define MS 1.99e30        // Masa del Sol en kg
 #define C 1.496e11 
 
+typedef struct {
+    double rx, ry;      // Posición 
+    double e;           // excentricidad
+    double m;           // Masa 
+} Body;
+
+
 void reescalamiento(double *rx, double *ry, double *t, double *m)
 {
 
@@ -48,9 +55,36 @@ double EnergiaAlternativa(double m, double rx, double ry, double vx, double vy)
     return E;
 }
 
+
+void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo) {
+    int i; 
+
+    for(i=0; i<N; i++){
+        fscanf(archivo, "%lf %lf %lf %lf ", 
+            &cuerpos[i].m, &cuerpos[i].rx, &cuerpos[i].ry, &cuerpos[i].e);
+    }
+}
+
 int main(void)
 {  double x,y,t,m,vx,vy,e;
-    
+   int N,i; 
+   FILE *archivo;
+
+   N=9;
+
+   Body cuerpos[N];
+  archivo = fopen("c:/Users/User/Documents/Fisica_compu/Compu/Grupo_Compu/SistemaSolar/initial.txt", "r");
+  
+  inicializarCuerpos(cuerpos, N, archivo);
+
+  for(i=0; i<N; i++){
+        printf( "m = %lf, rx = %lf, ry = %lf, e= %lf,\n", 
+            cuerpos[i].m, cuerpos[i].rx, cuerpos[i].ry, cuerpos[i].e);
+    }
+
+    fclose(archivo);
+
+
    x= 4.495*pow(10, 12);
    y= 0;
    t=180000000000;
@@ -67,3 +101,6 @@ int main(void)
     printf("E = %lf\n", Energia(e, m, x, y, vx, vy));
     printf("E = %lf\n", EnergiaAlternativa(m, x, y, vx, vy));
 }
+
+
+
