@@ -18,6 +18,8 @@ typedef struct {
 #define planetas 9               // Número de cuerpos (por ejemplo, Sol y Tierra)
 #define T_TOTAL 100.0    // Tiempo total de simulación (en unidades reescaladas)
 #define h 0.1           // Paso temporal
+#define PI 3.1415926535 // Valor de pi
+
 
 int N = planetas; //Número de planetas, por si acaso.
 void aceleracion(Body cuerpos[]) 
@@ -211,6 +213,20 @@ void computeTotalEnergy(Body bodies[], int N_BODIES, FILE *archivo) {
 }
 
 
+//Por último el periodo
+
+void calcularPeriodo(Body cuerpos[], int N, FILE *archivo) 
+{
+    for (int i = 1; i < N; i++) 
+    { // Comenzamos en 1 porque el Sol (índice 0) no tiene período orbital
+        double r = sqrt(cuerpos[i].rx * cuerpos[i].rx + cuerpos[i].ry * cuerpos[i].ry); // Distancia al Sol
+        cuerpos[i].t = sqrt(r * r * r); // Período orbital reescalado
+        fprintf(archivo, "Planeta %d: Periodo = %lf\n", i, cuerpos[i].t);
+    }
+    fprintf(archivo, "\n"); // Salto de línea para separar los pasos
+}
+
+
 int main (void)
 {
     FILE *archivo = fopen("inicialreescalado.txt", "r");
@@ -230,6 +246,11 @@ int main (void)
         printf("Error al abrir el archivo.\n");
         return 1;
     }
+    FILE *fileperiodo = fopen("SuperPeriodo.txt", "w");
+    if (fileperiodo == NULL) {
+        printf("Error al abrir el archivo.\n");
+        return 1;
+    }
 
 
     Body cuerpos[N]; // Arreglo de cuerpos
@@ -239,10 +260,13 @@ int main (void)
     {   
         verlet(cuerpos, file);
         computeTotalEnergy(cuerpos, N, fileenergia);
+        calcularPeriodo(cuerpos, N, fileperiodo);
     }
+
     fclose(file);
     fclose(fileenergia);
     fclose(archivo);
+    fclose(fileperiodo);
 
     return 0;
 }
