@@ -211,6 +211,18 @@ void computeTotalEnergy(Body bodies[], int N_BODIES, FILE *archivo) {
 }
 
 
+
+void calcularPeriodo(Body cuerpos[], int N, FILE *archivo) 
+{
+    for (int i = 1; i < N; i++) 
+    { // Comenzamos en 1 porque el Sol (índice 0) no tiene período orbital
+        double r = sqrt(cuerpos[i].rx * cuerpos[i].rx + cuerpos[i].ry * cuerpos[i].ry); // Distancia al Sol
+        cuerpos[i].t = sqrt(r * r * r); // Período orbital reescalado
+        fprintf(archivo, "Planeta %d: Periodo = %lf\n", i, cuerpos[i].t);
+    }
+    fprintf(archivo, "\n"); // Salto de línea para separar los pasos
+}
+
 int main (void)
 {
     FILE *archivo = fopen("inicialreescalado.txt", "r");
@@ -231,6 +243,12 @@ int main (void)
         return 1;
     }
 
+    FILE *fileperiodo = fopen("SuperPeriodo.txt", "w");
+    if (fileperiodo == NULL) {
+        printf("Error al abrir el archivo.\n");
+        return 1;
+    }
+
 
     Body cuerpos[N]; // Arreglo de cuerpos
     inicializarCuerpos(cuerpos, N, archivo);
@@ -239,10 +257,12 @@ int main (void)
     {   
         verlet(cuerpos, file);
         computeTotalEnergy(cuerpos, N, fileenergia);
+        calcularPeriodo(cuerpos, N, fileperiodo);
     }
     fclose(file);
     fclose(fileenergia);
     fclose(archivo);
+    fclose(fileperiodo);
 
     return 0;
 }
