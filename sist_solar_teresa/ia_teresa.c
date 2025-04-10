@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N_BODIES 9      // Sol + 8 planetas (se escriben solo los 8 planetas)
-#define T_TOTAL 200.0  // Tiempo total de simulación en unidades reescaladas (1 unidad ~ 58.1 días)
-#define DT 0.1       // Paso temporal
+#define N_BODIES 13      // Sol + 8 planetas (se escriben solo los 8 planetas)
+#define T_TOTAL 500.0  // Tiempo total de simulación en unidades reescaladas (1 unidad ~ 58.1 días)
+#define DT 0.1   // Paso temporal
 
 typedef struct {
     double rx, ry;    // Posición reescalada: r' = r / UA (1 UA)
@@ -131,6 +131,36 @@ void initializeBodies(Body bodies[]) {
     bodies[8].vx = 0.0;
     bodies[8].vy = sqrt(1.0 / 30.1);
     bodies[8].m  = 5.15e-5;
+
+
+     // Cuerpo    inventada a ver que tal
+     bodies[9].rx = 24.1;
+     bodies[9].ry = 0.0;
+     bodies[9].vx = 0.0;
+     bodies[9].vy = sqrt(1.0 / 24.1);
+     bodies[9].m  = 6.15e-5;
+
+     // Cuerpo    inventada a ver que tal
+     bodies[10].rx = 12;
+     bodies[10].ry = 0.0;
+     bodies[10].vx = 0.0;
+     bodies[10].vy = sqrt(1.0 / 12);
+     bodies[10].m  = 6.15e-4;
+
+     // Cuerpo    inventada a ver que tal
+     bodies[11].rx = 13;
+     bodies[11].ry = 0.0;
+     bodies[11].vx = 0.0;
+     bodies[11].vy = sqrt(1.0 / 13);
+     bodies[11].m  = 8.15e-5;
+
+     // Cuerpo    inventada a ver que tal
+     bodies[12].rx = 16;
+     bodies[12].ry = 0.0;
+     bodies[12].vx = 0.0;
+     bodies[12].vy = sqrt(1.0 / 16);
+     bodies[12].m  = 2.15e-5;
+ 
 }
 
 void computeAccelerations(Body bodies[]) {

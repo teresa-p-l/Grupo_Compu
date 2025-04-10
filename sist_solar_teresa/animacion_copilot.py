@@ -9,10 +9,10 @@ file_in = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/sist_solar_teresa/planetas"
 file_out = "planetas"  # Nombre del fichero de salida (sin extensión)
 x_min, x_max = -50, 50  # Límites de los ejes X
 y_min, y_max = -50, 50  # Límites de los ejes Y
-interval = 70  # Tiempo entre fotogramas en milisegundos
+interval = 5  # Tiempo entre fotogramas en milisegundos
 show_trail = True  # Mostrar estelas
 trail_width = 1  # Ancho de las estelas
-save_to_file = True  # Guardar en fichero
+save_to_file = False  # Guardar en fichero
 dpi = 150  # Calidad del vídeo
 planet_radius = 1  # Radio de los planetas
 
