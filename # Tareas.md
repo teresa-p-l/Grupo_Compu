@@ -32,3 +32,11 @@ Para las siguientes tareas hay que especificar esto último.
 - Optimizar con openMP ya que estamos en C. --Javier 
 
 
+
+
+
+
+
+Apuntar en el plot
+
+- Número de planetas, paso y tiempo. t #hebras, tipo de optimización y procesador.
