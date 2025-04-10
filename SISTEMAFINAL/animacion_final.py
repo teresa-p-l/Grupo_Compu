@@ -76,7 +76,7 @@ energy_xdata = []
 energy_ydata = []
 energy_line, = ax_energy.plot([], [], color="red")
 ax_energy.set_xlim(0, nframes)
-ax_energy.set_ylim(min(energia_values)-1e-08, max(energia_values)+1e-08)
+ax_energy.set_ylim(min(energia_values)-1e-07, max(energia_values)+1e-07)
 ax_energy.set_xlabel("Frame")
 ax_energy.set_ylabel("Energía")
 for i, (planet_pos, radius) in enumerate(zip(frames_data[0], planet_radius)):
