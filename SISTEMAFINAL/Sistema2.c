@@ -16,8 +16,8 @@ typedef struct {
 #define C 1.496e11        // Unidad de distancia: distancia Tierra-Sol en metros
 
 #define planetas 9               // Número de cuerpos (por ejemplo, Sol y Tierra)
-#define T_TOTAL 10.0    // Tiempo total de simulación (en unidades reescaladas)
-#define h 0.01           // Paso temporal
+#define T_TOTAL 100.0    // Tiempo total de simulación (en unidades reescaladas)
+#define h 0.1           // Paso temporal
 
 int N = planetas; //Número de planetas, por si acaso.
 void aceleracion(Body cuerpos[]) 
@@ -79,7 +79,7 @@ void verlet(Body cuerpos[], FILE *file)
     //Con esto ya tenemos r(t+h), v(t+h) y a(t+h). Dichos parámetros se han actualizado en el cuerpo.
     for (int i=0; i<planetas; i++)
     {
-        fprintf(file, "%lf, %lf, %lf, %lf\n", cuerpos[i].rx, cuerpos[i].ry, cuerpos[i].vx, cuerpos[i].vy);
+        fprintf(file, "%lf, %lf\n", cuerpos[i].rx, cuerpos[i].ry);
 
     }
     fprintf(file, "\n"); //Salto de línea para separar los pasos
