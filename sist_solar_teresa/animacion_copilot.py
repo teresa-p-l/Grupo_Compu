@@ -4,7 +4,49 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.patches import Circle
 import matplotlib.cm as cm
 
-# Parámetros de la animación de los pkanetas
+
+#####################################################################################
+#   El fichero planetas debe estructurarse de la siguiente forma:
+# 
+#   x1_1, y1_1
+#   x2_1, y2_1
+#   x3_1, y3_1
+#   (...)
+#   xN_1, yN_1
+#   
+#   x1_2, y1_2
+#   x2_2, y2_2
+#   x3_2, y3_2
+#   (...)
+#   xN_2, yN_2
+#
+#   x1_3, y1_3
+#   x2_3, y2_3
+#   x3_3, y3_3
+#   (...)
+#   xN_3, yN_3
+#   
+#   (...)
+#
+#   donde xi_j es la componente x del planeta i-ésimo en el instante de
+#   tiempo j-ésimo, e yi_j lo mismo en la componente y.
+#
+#
+#   El fichero energia.txt debe estructurarse de la siguiente forma:  
+#   
+#   E_1
+#   E_2
+#   E_3
+#   E_4
+#   (...)
+#   E_n
+#
+# donde E_j es la energía total del sistema en el instante de tiempo j-ésimo.
+###########################################################################################
+
+
+
+# Parámetros de la animación de los planetas
 file_in = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/sist_solar_teresa/planetas"  # Ruta del fichero de datos
 file_out = "planetas"  # Nombre del fichero de salida (sin extensión)
 x_min, x_max = -50, 50  # Límites de los ejes X
