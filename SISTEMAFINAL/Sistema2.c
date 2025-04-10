@@ -173,13 +173,41 @@ void Energia(Body cuerpos[], int N, FILE *archivo)
 {
     double E[N];
     double l;
-    for (int i=1; i<N; i++)
+    for (int i=0; i<N; i++)
     {
         l=cuerpos[i].m*(cuerpos[i].rx*cuerpos[i].vy-cuerpos[i].ry*cuerpos[i].vx);
         E[i]=((cuerpos[i].e*cuerpos[i].e)-1)*(cuerpos[i].m*cuerpos[i].m*cuerpos[i].m)/(2*l*l);
         fprintf(archivo, "%e\n", E[i]);
     }
     fprintf(archivo, "\n"); //Salto de línea para separar los pasos
+}
+
+
+//Esta energía es mucho mejor
+void computeTotalEnergy(Body bodies[], int N_BODIES, FILE *archivo) {
+    int i, j;
+    double kinetic = 0.0, potential = 0.0;
+    double energy=0.0;
+    // Energía cinética: (1/2) m v²
+    for (i = 0; i < N_BODIES; i++) {
+        double v2 = bodies[i].vx * bodies[i].vx + bodies[i].vy * bodies[i].vy;
+        kinetic += 0.5 * bodies[i].m * v2;
+    }
+
+    // Energía potencial: -G * m_i * m_j / r_ij, con G=1 en unidades reescaladas
+    for (i = 0; i < N_BODIES; i++) {
+        for (j = i + 1; j < N_BODIES; j++) {
+            double dx = bodies[i].rx - bodies[j].rx;
+            double dy = bodies[i].ry - bodies[j].ry;
+            double r = sqrt(dx * dx + dy * dy);
+            if (r > 1e-10) { // Evitar división por cero
+                potential -= bodies[i].m * bodies[j].m / r;
+            }
+        }
+    }
+
+    energy = kinetic + potential;
+    fprintf(archivo, "%e\n", energy);
 }
 
 
@@ -210,7 +238,7 @@ int main (void)
     for(float i=0; i<T_TOTAL; i=i+h)
     {   
         verlet(cuerpos, file);
-        Energia(cuerpos, N, fileenergia);
+        computeTotalEnergy(cuerpos, N, fileenergia);
     }
     fclose(file);
     fclose(fileenergia);
