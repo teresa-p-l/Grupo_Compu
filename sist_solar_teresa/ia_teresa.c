@@ -17,16 +17,24 @@ typedef struct {
 void initializeBodies(Body bodies[]);
 void computeAccelerations(Body bodies[]);
 void velocityVerletStep(Body bodies[]);
+double computeTotalEnergy(Body bodies[]);
 
 int main(void) {
     Body bodies[N_BODIES];
     int i, step, numSteps;
-    FILE *fout;
+    FILE *fout, *fenergy; // Añadimos el fichero para energía
 
     // Abrir el fichero "planetas" para escritura
     fout = fopen("planetas", "w");
     if (fout == NULL) {
         perror("Error al abrir el fichero de salida");
+        return EXIT_FAILURE;
+    }
+
+    fenergy = fopen("energia.txt", "w");
+    if (fenergy == NULL) {
+        perror("Error al abrir el fichero de energía");
+        fclose(fout);
         return EXIT_FAILURE;
     }
 
@@ -43,12 +51,17 @@ int main(void) {
         }
         // Línea en blanco para separar los datos de cada instante
         fprintf(fout, "\n");
+
+        // Calcular y guardar la energía total
+        double energy = computeTotalEnergy(bodies);
+        fprintf(fenergy, "%lf\n", energy);
         
         // Actualiza usando el algoritmo de Verlet en velocidad
         velocityVerletStep(bodies);
     }
 
     fclose(fout);
+    fclose(fenergy);
     printf("Simulación finalizada. Los datos se han guardado en el fichero 'planetas'.\n");
     
     return 0;
@@ -169,4 +182,30 @@ void velocityVerletStep(Body bodies[]) {
         bodies[i].vx += 0.5 * (old_ax[i] + bodies[i].ax) * DT;
         bodies[i].vy += 0.5 * (old_ay[i] + bodies[i].ay) * DT;
     }
+}
+
+// NUEVA FUNCIÓN PARA ENERGÍA TOTAL
+double computeTotalEnergy(Body bodies[]) {
+    int i, j;
+    double kinetic = 0.0, potential = 0.0;
+
+    // Energía cinética: (1/2) m v²
+    for (i = 0; i < N_BODIES; i++) {
+        double v2 = bodies[i].vx * bodies[i].vx + bodies[i].vy * bodies[i].vy;
+        kinetic += 0.5 * bodies[i].m * v2;
+    }
+
+    // Energía potencial: -G * m_i * m_j / r_ij, con G=1 en unidades reescaladas
+    for (i = 0; i < N_BODIES; i++) {
+        for (j = i + 1; j < N_BODIES; j++) {
+            double dx = bodies[i].rx - bodies[j].rx;
+            double dy = bodies[i].ry - bodies[j].ry;
+            double r = sqrt(dx * dx + dy * dy);
+            if (r > 1e-10) { // Evitar división por cero
+                potential -= bodies[i].m * bodies[j].m / r;
+            }
+        }
+    }
+
+    return kinetic + potential;
 }

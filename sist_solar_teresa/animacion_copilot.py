@@ -16,9 +16,8 @@ save_to_file = True  # Guardar en fichero
 dpi = 150  # Calidad del vídeo
 planet_radius = 1  # Radio de los planetas
 
-
 # Leer archivo de energía
-energia_file = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/sist_solar_teresa/energia"
+energia_file = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/sist_solar_teresa/energia.txt"
 with open(energia_file, "r") as f:
     energia_values = [float(line.strip()) for line in f if line.strip()]
 
