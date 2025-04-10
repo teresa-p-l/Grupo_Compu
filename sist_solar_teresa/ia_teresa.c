@@ -55,7 +55,7 @@ int main(void) {
         // Calcular y guardar la energía total
         double energy = computeTotalEnergy(bodies);
         fprintf(fenergy, "%lf\n", energy);
-        
+
         // Actualiza usando el algoritmo de Verlet en velocidad
         velocityVerletStep(bodies);
     }
@@ -132,8 +132,7 @@ void initializeBodies(Body bodies[]) {
     bodies[8].vy = sqrt(1.0 / 30.1);
     bodies[8].m  = 5.15e-5;
 
-
-     // Cuerpo    inventada a ver que tal
+         // Cuerpo    inventada a ver que tal
      bodies[9].rx = 24.1;
      bodies[9].ry = 0.0;
      bodies[9].vx = 0.0;
@@ -160,6 +159,7 @@ void initializeBodies(Body bodies[]) {
      bodies[12].vx = 0.0;
      bodies[12].vy = sqrt(1.0 / 16);
      bodies[12].m  = 2.15e-5;
+
  
 }
 
