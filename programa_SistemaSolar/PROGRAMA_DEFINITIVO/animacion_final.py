@@ -5,11 +5,16 @@ from matplotlib.patches import Circle
 import matplotlib.cm as cm
 
 # Parámetros de la animación de los pkanetas
-file_in = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/SALIDA.txt"  # Ruta del fichero de datos
+#      CAMBIAD CADA UNO LA RUTA DE LOS FICHEROS EN VUETRO ORDENADOR
+
+file_in = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SALIDA.txt"  # Ruta de teresa
+#file_in = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/SALIDA.txt"  # Ruta del fichero de datos
+
+
 file_out = "planetas"  # Nombre del fichero de salida (sin extensión)
 x_min, x_max = -50, 50  # Límites de los ejes X
 y_min, y_max = -50, 50  # Límites de los ejes Y
-interval = 1  # Tiempo entre fotogramas en milisegundos
+interval = 0.2  # Tiempo entre fotogramas en milisegundos
 show_trail = True  # Mostrar estelas
 trail_width = 1  # Ancho de las estelas
 save_to_file = False  # Guardar en fichero
@@ -17,7 +22,11 @@ dpi = 150  # Calidad del vídeo
 planet_radius = 1  # Radio de los planetas
 
 # Leer archivo de energía
-energia_file = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/SuperEnergia.txt"
+#      CAMBIAD CADA UNO LA RUTA DE LOS FICHEROS EN VUETRO ORDENADOR
+
+energia_file = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SuperEnergia.txt"
+#energia_file = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/SuperEnergia.txt"
+
 with open(energia_file, "r") as f:
     energia_values = [float(line.strip()) for line in f if line.strip()]
 
@@ -74,7 +83,7 @@ energy_xdata = []
 energy_ydata = []
 energy_line, = ax_energy.plot([], [], color="red")
 ax_energy.set_xlim(0, nframes)
-ax_energy.set_ylim(min(energia_values)-1e-08, max(energia_values)+1e-08)
+ax_energy.set_ylim(min(energia_values)-1e-07, max(energia_values)+1e-07)
 ax_energy.set_xlabel("Frame")
 ax_energy.set_ylabel("Energía")
 for i, (planet_pos, radius) in enumerate(zip(frames_data[0], planet_radius)):
