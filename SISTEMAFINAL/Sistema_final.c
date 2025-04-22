@@ -17,7 +17,7 @@ typedef struct {
 
 #define planetas 9               // Número de cuerpos (por ejemplo, Sol y Tierra)
 #define T_TOTAL 500.0    // Tiempo total de simulación (en unidades reescaladas)
-#define h 0.1           // Paso temporal
+#define h 0.5           // Paso temporal
 
 int N = planetas; //Número de planetas, por si acaso.
 void aceleracion(Body cuerpos[]) 
