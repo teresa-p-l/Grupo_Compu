@@ -6,13 +6,16 @@ El programa se basa en el algoritmo de Metropolis para simular el modelo de Isin
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <time.h>
+#include <string.h>
 
 #define N 20                // Tamaño de la red (NxN)
 #define STEPS 100        // Pasos de Monte Carlo por temperatura
 #define TEMP_MIN 0        // Temperatura mínima
-#define TEMP_MAX 5        // Temperatura máxima
-#define TEMP_STEP 0.5     // Paso de temperatura
-#define MEDIDAS 10000        // Número de pasos para tomar medidas
+#define TEMP_MAX 3.4        // Temperatura máxima
+#define TEMP_STEP 0.2     // Paso de temperatura
+#define MEDIDAS 100        // Número de pasos para tomar medidas
 
 // Definimos la red
 int spins[N][N]; // Red de espines
@@ -134,17 +137,24 @@ int main(void)
 
     //We loop over the temperatures
     for (double T = TEMP_MIN; T <= TEMP_MAX; T += TEMP_STEP) {
-        //We loop over the steps
+        //We loop over the steps to stabilize the system
         for (int step = 0; step < STEPS; step++) {
             montecarlo_step(T);
         }
-        //We stabilize the system
-        
 
         //We calculate the energy
         double E = energia_total();
         fprintf(data, "%f %f\n", T, E);
-        savespin(spins_all);
+
+        //We save the spins in the file
+        fprintf(spins_all, "# T = %.2f\n", T);
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                fprintf(spins_all, "%d ", spins[i][j]);
+            }
+            fprintf(spins_all, "\n");
+        }
+        fprintf(spins_all, "\n"); // Separador entre temperaturas
     }
     fclose(data);
     fclose(spins_all);
