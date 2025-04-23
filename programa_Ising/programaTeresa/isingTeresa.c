@@ -6,11 +6,11 @@
 // Inicializamos los parámetros
 
 #define N 10                // Tamaño de la red (NxN)
-#define STEPS 10000        // Pasos de Monte Carlo por temperatura
+#define STEPS 100        // Pasos de Monte Carlo por temperatura
 #define TEMP_MIN 0        // Temperatura mínima
 #define TEMP_MAX 3      // Temperatura máxima
 #define TEMP_STEP 0.25     // Paso de temperatura
-#define MEDIDAS 10000        // Número de pasos para tomar medidas
+#define MEDIDAS 100        // Número de pasos para tomar medidas
 
 // Definimos la red
 int spins[N][N]; // Red de espines
@@ -67,7 +67,7 @@ void monte_carlo_step(double T) {
         int x = rand() % N;
         int y = rand() % N;
         int dE = delta_energia(spins[x][y], x, y);
-        if (( rand() / RAND_MAX) < probabilidad(dE, T)) // Si la probabilidad es menor que un número aleatorio entre 0 y 1, cambiamos el spin 
+        if (( rand() / (double)RAND_MAX) < probabilidad(dE, T)) // Si la probabilidad es menor que un número aleatorio entre 0 y 1, cambiamos el spin 
             spins[x][y] *= -1;
     }
 }
@@ -135,7 +135,7 @@ int main(){
         printf("Calculando T = %.2f...\n", T);
 
         // Inicializar la red de espines aleatoriamente
-        start_spins_1(); // o start_spins_1() para todos a 1
+        start_spins_rand(); // o start_spins_1() para todos a 1
 
         /*
         // Equilibrar el sistema
@@ -147,7 +147,9 @@ int main(){
         // Medir
         double E_T = 0.0, M_T = 0.0;
         for (int i = 0; i < MEDIDAS; i++) {
-            monte_carlo_step(T);
+            for (int j = 0; j < STEPS; j++) {
+                monte_carlo_step(T);
+            }
             E_T += energia_total();
             M_T += magnetizacion();
         }
