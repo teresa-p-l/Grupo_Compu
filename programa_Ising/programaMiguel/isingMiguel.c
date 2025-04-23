@@ -5,8 +5,8 @@
 
 #define N 40                // Tamaño de la red (NxN)
 #define STEPS 100000        // Pasos de Monte Carlo por temperatura
-#define TEMP_MIN 1.5
-#define TEMP_MAX 3.5
+#define TEMP_MIN 0
+#define TEMP_MAX 5
 #define TEMP_STEP 0.5
 #define MEDIDAS 1000        // Número de pasos para tomar medidas
 
