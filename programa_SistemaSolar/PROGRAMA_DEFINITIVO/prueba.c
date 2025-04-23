@@ -15,7 +15,7 @@ typedef struct {
 #define MS 1.99e30        // Masa del Sol en kg
 #define C 1.496e11        // Unidad de distancia: distancia Tierra-Sol en metros
 
-#define planetas 10              // Número de cuerpos (por ejemplo, Sol y Tierra)
+#define planetas 13              // Número de cuerpos (por ejemplo, Sol y Tierra)
 #define T_TOTAL 100.0    // Tiempo total de simulación (en unidades reescaladas)
 #define h 0.1           // Paso temporal
 
@@ -164,11 +164,12 @@ void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo)
     }
     cuerpos[0].vx = 0.0;
     cuerpos[0].vy = 0.0;
-
-    cuerpos[9].vx = 0.0;
-    cuerpos[9].vy = cuerpos[5].vy + 0.275); //Ajustamos la velocidad del planeta 9 para que sea un poco más rápido que el planeta 5.;
-
-
+    /*
+    cuerpos[10].vx = cuerpos[5].vx;
+    cuerpos[10].vy = cuerpos[5].vy;
+    cuerpos[11].vx = cuerpos[5].vx;
+    cuerpos[11].vy = cuerpos[5].vy;
+    */
 }
 
 //Ahora para calcular la energía
@@ -213,6 +214,18 @@ void computeTotalEnergy(Body bodies[], int N_BODIES, FILE *archivo) {
     energy = kinetic + potential;
     fprintf(archivo, "%e\n", energy);
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 int main (void)

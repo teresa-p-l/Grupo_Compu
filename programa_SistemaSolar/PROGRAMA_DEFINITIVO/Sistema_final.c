@@ -80,7 +80,6 @@ void verlet(Body cuerpos[], FILE *file)
     for (int i=0; i<planetas; i++)
     {
         fprintf(file, "%lf, %lf\n", cuerpos[i].rx, cuerpos[i].ry);
-
     }
     fprintf(file, "\n"); //Salto de línea para separar los pasos
 }
