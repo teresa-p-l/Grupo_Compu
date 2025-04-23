@@ -6,11 +6,12 @@
 // Inicializamos los parámetros
 
 #define N 10                // Tamaño de la red (NxN)
-#define STEPS 10000        // Pasos de Monte Carlo por temperatura
+#define STEPS 10000      // Pasos de Monte Carlo por temperatura
 #define TEMP_MIN 0        // Temperatura mínima
-#define TEMP_MAX 3      // Temperatura máxima
-#define TEMP_STEP 0.25     // Paso de temperatura
-#define MEDIDAS 10000        // Número de pasos para tomar medidas
+#define TEMP_MAX 4       // Temperatura máxima
+#define TEMP_STEP 0.5     // Paso de temperatura
+#define MEDIDAS 100 //Número de pasos para tomar medidas
+#define TEMPERATURA 2       
 
 // Definimos la red
 int spins[N][N]; // Red de espines
@@ -129,13 +130,15 @@ int main(){
         return 1;
     }
 
+    double T = TEMPERATURA; // Temperatura a la que queremos calcular
+
     fprintf(data, "#T\tEprom\tMprom\n");
 
-    for (double T = TEMP_MIN; T <= TEMP_MAX + 1e-6; T += TEMP_STEP) {
-        printf("Calculando T = %.2f...\n", T);
+    
+    printf("Calculando T = %.2f...\n", T);
 
-        // Inicializar la red de espines aleatoriamente
-        start_spins_1(); // o start_spins_1() para todos a 1
+    // Inicializar la red de espines aleatoriamente
+    start_spins_1(); // o start_spins_1() para todos a 1
 
         /*
         // Equilibrar el sistema
@@ -144,17 +147,15 @@ int main(){
         */
 
 
-        // Medir
-        double E_T = 0.0, M_T = 0.0;
-        for (int i = 0; i < MEDIDAS; i++) {
-            monte_carlo_step(T);
-            E_T += energia_total();
-            M_T += magnetizacion();
-        }
+    // Medir
+    double E_T = 0.0, M_T = 0.0;
+    for (int i = 0; i < MEDIDAS; i++) {
+         monte_carlo_step(T);
+        E_T += energia_total();
+        M_T += magnetizacion();
 
         double Eprom = (E_T / MEDIDAS) / (2* N); 
         double Mprom = M_T / MEDIDAS;
-
         // Guardar medidas
         fprintf(data, "%.2f\t%.5f\t%.5f\n", T, Eprom, Mprom);
         printf("T=%.2f\tE=%.5f\tM=%.5f\n", T, Eprom, Mprom);
@@ -166,8 +167,11 @@ int main(){
                 fprintf(spins_all, "%d ", spins[i][j]);
             }
             fprintf(spins_all, "\n");
-        }
-        fprintf(spins_all, "\n"); // Separador entre temperaturas
+
+     }
+     fprintf(spins_all, "\n"); // Separador entre temperaturas
+
+    
     }
 
     fclose(data);

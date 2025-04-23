@@ -36,7 +36,7 @@ fig, ax = plt.subplots(figsize=(4, 4))
 ax.axis('off')
 
 
-cmap_usado = 'cividis'
+cmap_usado = 'viridis'
 
 
 # Función de actualización para la animación
@@ -58,7 +58,7 @@ print(" Video guardado como ising_video.mp4")
 
 from PIL import Image
 
-# BONUS: generar GIF también
+
 # BONUS: generar GIF también
 frames = []
 for bloque in bloques:
