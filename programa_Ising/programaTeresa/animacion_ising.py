@@ -32,7 +32,7 @@ for bloque in bloques:
     estados.append(matriz)
 
 # Crear la figura para la animación
-fig, ax = plt.subplots(figsize=(4, 4))
+fig, ax = plt.subplots(figsize=(5, 5))
 ax.axis('off')
 
 
@@ -49,49 +49,7 @@ def update(frame):
     return ax,
 
 # Crear la animación
-anim = FuncAnimation(fig, update, frames=len(estados), interval=500, repeat=False)
+anim = FuncAnimation(fig, update, frames=len(estados), interval=5, repeat=False)
 
 # Guardar el video sin cv2
-anim.save('C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/programaTeresa/ising_video.mp4', writer='ffmpeg', fps=2)
-
-print(" Video guardado como ising_video.mp4")
-
-from PIL import Image
-
-
-# BONUS: generar GIF también
-frames = []
-for bloque in bloques:
-    lineas = bloque.strip().split("\n")
-    if not lineas or not lineas[0].startswith("#"):
-        continue
-    temp_match = re.search(r"T\s*=\s*([\d\.]+)", lineas[0])
-    T = float(temp_match.group(1)) if temp_match else 0.0
-    matriz = np.array([[int(x) for x in fila.strip().split()] for fila in lineas[1:]])
-    img = (matriz + 1) / 2  # Convertir de [-1,1] a [0,1]
-
-    # Crear la figura
-    fig, ax = plt.subplots(figsize=(4, 4))
-    ax.imshow(img, cmap=cmap_usado, interpolation='nearest')
-    ax.set_title(f"T = {T:.2f}")
-    ax.axis('off')
-    plt.tight_layout()
-
-    # Convertir la figura a una imagen directamente con PIL
-    fig.canvas.draw()
-    frame = np.array(fig.canvas.renderer.buffer_rgba())  # Usar buffer_rgba para obtener la imagen
-    frame = Image.fromarray(frame)
-    frames.append(frame)
-    plt.close(fig)
-
-# Guardar el GIF
-frames[0].save(
-    "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/programaTeresa/ising_anim.gif", 
-    save_all=True, 
-    append_images=frames[1:], 
-    duration=1000, 
-    loop=0
-)
-
-print(" GIF guardado como ising_anim.gif")
-
+plt.show()

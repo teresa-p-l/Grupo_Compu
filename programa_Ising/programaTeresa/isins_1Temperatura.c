@@ -5,10 +5,10 @@
 
 // Inicializamos los parámetros
 
-#define N 20               // Tamaño de la red (NxN)
-#define STEPS 1000      // Pasos de Monte Carlo por temperatura
+#define N 40               // Tamaño de la red (NxN)
+#define STEPS 10000      // Pasos de Monte Carlo por temperatura
 #define MEDIDAS 100 //Número de pasos para tomar medidas
-#define TEMPERATURA 2       
+#define TEMPERATURA 2     
 
 // Definimos la red
 int spins[N][N]; // Red de espines
@@ -136,12 +136,6 @@ int main(){
 
     // Inicializar la red de espines aleatoriamente
     start_spins_rand(); // o start_spins_1() para todos a 1
-
-        /*
-        // Equilibrar el sistema
-        for (int i = 0; i < 5000; i++)
-            monte_carlo_step(T);
-        */
 
 
     // Medir
