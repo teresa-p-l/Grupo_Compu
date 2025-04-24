@@ -15,7 +15,7 @@ typedef struct {
 #define MS 1.99e30        // Masa del Sol en kg
 #define C 1.496e11        // Unidad de distancia: distancia Tierra-Sol en metros
 
-#define planetas 10              // Número de cuerpos (por ejemplo, Sol y Tierra)
+#define planetas 12              // Número de cuerpos (por ejemplo, Sol y Tierra)
 #define T_TOTAL 100.0    // Tiempo total de simulación (en unidades reescaladas)
 #define h 0.1           // Paso temporal
 
@@ -167,6 +167,9 @@ void inicializarCuerpos(Body cuerpos[], int N, FILE *archivo)
 
     cuerpos[9].vy=0.31;
     cuerpos[9].vx=-0.275;
+
+    cuerpos[10].vy=0.219;
+    cuerpos[10].vx=-0.187;
     /*
     cuerpos[10].vx = cuerpos[5].vx;
     cuerpos[10].vy = cuerpos[5].vy;
