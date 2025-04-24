@@ -126,14 +126,42 @@ int main(void)
 
     FILE *data = fopen("ising_data.txt", "w");
     FILE *spins_all = fopen("spins_all_temps.txt", "w");
+    FILE *spins1 = fopen("spinsSOLOUNA.txt", "w");
 
-    if (!data || !spins_all) {
+    if (!data || !spins_all || !spins) {
         perror("Error al abrir archivos");
         return 1;
     }
 
     //We initialize the spins randomly
     start_spins_rand();
+
+    //##############SELECT A TEMPERATURE ###########
+
+    #define Temp 1.0
+
+
+    //We will loop over the steps to stabilize the system
+    for(int j=0; j<MEDIDAS; j++){
+    for (int step = 0; step < STEPS; step++) {
+            montecarlo_step(Temp);
+    }
+
+    //We calculate the energy
+    double E = energia_total();
+    fprintf(data, "%f %f\n", Temp, E);
+
+    //We save the spins in the file
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            fprintf(spins1, "%d ", spins[i][j]);
+          }
+        fprintf(spins1, "\n");
+       }
+    fprintf(spins1, "\n"); // Separador entre temperaturas
+    
+    }
+
 
     //We loop over the temperatures
     for (double T = TEMP_MIN; T <= TEMP_MAX; T += TEMP_STEP) {
