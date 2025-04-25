@@ -10,13 +10,13 @@ El programa se basa en el algoritmo de Metropolis para simular el modelo de Isin
 #include <time.h>
 #include <string.h>
 
-#define N 50                // Tamaño de la red (NxN)
-#define STEPS 100        // Pasos de Monte Carlo por temperatura
+#define N 40                // Tamaño de la red (NxN)
+#define STEPS 30        // Pasos de Monte Carlo por temperatura
 #define TEMP_MIN 0        // Temperatura mínima
 #define TEMP_MAX 3.4        // Temperatura máxima
 #define TEMP_STEP 0.2     // Paso de temperatura
-#define MEDIDAS 100        // Número de pasos para tomar medidas
-#define Temp 2.82        // Temperatura de la simulación solo para el caso de 1 temperatura
+#define MEDIDAS 50        // Número de pasos para tomar medidas
+#define Temp 1.0        // Temperatura de la simulación solo para el caso de 1 temperatura
 
 // Definimos la red
 int spins[N][N]; // Red de espines
@@ -63,7 +63,7 @@ int delta_energia(int spin, int x, int y)
 //If the random number is greater than the probability, we don't flip the spin.
 
 double probabilidad(int dE, double T) {
-    double p = exp(-dE / T);
+    double p = exp(-1.0*dE / T);
     if(p <= 1){return p;} 
     else{return 1;}
 }
@@ -137,14 +137,46 @@ int main(void)
     //We initialize the spins randomly
     start_spins_rand();
 
-    //##############SELECT A TEMPERATURE ###########
+    //##############   FRAME A FRAME    ###########
+
+/*
+    //We now loop over EACH movement.
+
+    for(int i=0; i<MEDIDAS; i++)
+    {
+    for(int j=1; j<STEPS; j++)
+    {
+    for (int i = 0; i < N * N; i++) {
+        int x = rand() % N;
+        int y = rand() % N;
+        int dE = delta_energia(spins[x][y], x, y);
+        if (( 1.0*rand() / (1.0*RAND_MAX)) < probabilidad(dE, Temp)){ // If the probability is less than a random number between 0 and 1, we flip the spin 
+            spins[x][y] *= -1;
+
+        //Now if we did really flip the spin, we will save the spins in the file
+
+        for(int a=0; a<N; a++){
+            for(int b=0; b<N; b++){
+                fprintf(spins1, "%d ", spins[a][b]);
+            }
+            fprintf(spins1, "\n");
+        }
+        fprintf(spins1, "\n");
+    }    
+    }
+    }
+    }
+*/
+
+
+    //###########Now if we want ONLY THE FINAL FRAME:###########3
 
 
     //We will loop over the steps to stabilize the system
     for(int j=0; j<MEDIDAS; j++){
     for (int step = 0; step < STEPS; step++) {
             montecarlo_step(Temp);
-    }
+    
 
     //We calculate the energy
     double E = energia_total();
@@ -158,10 +190,12 @@ int main(void)
         fprintf(spins1, "\n");
        }
     fprintf(spins1, "\n"); // Separador entre temperaturas
-    
+    }
     }
 
+    
 
+/*
     //We loop over the temperatures
     for (double T = TEMP_MIN; T <= TEMP_MAX; T += TEMP_STEP) {
         //We loop over the steps to stabilize the system
@@ -183,8 +217,10 @@ int main(void)
         }
         fprintf(spins_all, "\n"); // Separador entre temperaturas
     }
+        */
     fclose(data);
     fclose(spins_all);
+    fclose(spins1);
 
     return 0;
 }

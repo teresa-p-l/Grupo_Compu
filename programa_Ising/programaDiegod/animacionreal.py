@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
-import os
 from matplotlib.colors import LinearSegmentedColormap
 
 def leer_matrices(filename):
@@ -29,15 +28,11 @@ def leer_matrices(filename):
 
     return matrices
 
-def crear_video_matrices(matrices, output_path, temperatura, fps=2):
+def mostrar_animacion_tiempo_real(matrices, temperatura, fps=5):
     """
-    Crea un video a partir de las matrices de spins para una sola temperatura.
+    Muestra una animación en tiempo real a partir de las matrices de spins.
     Cada frame corresponde a un paso temporal.
-    Permite ajustar la velocidad del video mediante el parámetro fps.
     """
-    # Crear el directorio de salida si no existe
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-
     # Crear un mapa de colores personalizado (azul claro y azul oscuro)
     colors = ["#00008B", "#ADD8E6"]  # Azul oscuro y azul claro
     cmap = LinearSegmentedColormap.from_list("custom_blue", colors, N=2)
@@ -57,27 +52,16 @@ def crear_video_matrices(matrices, output_path, temperatura, fps=2):
     frames = [np.array(matriz) for matriz in matrices]
 
     # Crear la animación
-    anim = animation.FuncAnimation(fig, actualizar, frames=frames, repeat=False)
+    anim = animation.FuncAnimation(fig, actualizar, frames=frames, interval=1000 // fps, repeat=False)
 
-    # Guardar el video
-    anim.save(output_path, writer='ffmpeg', fps=fps)
-    print(f"Video guardado en: {output_path}")
+    # Mostrar la animación en tiempo real
+    plt.show()
 
 # Ejemplo de uso
 if __name__ == "__main__":
-    
-    #Si queremos un video cambio a cambio:
-    #archivo = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spinsframe.txt"
-    #output_path = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spinsframe_video.mp4"
-    
-    
-    #Ahora si solo queremos el final:
     archivo = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spinsSOLOUNA.txt"
-    output_path = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spinsSOLOUNA_video.mp4"
-    
-    
-    temperatura = 1.0  # Cambia esto según la temperatura correspondiente
-    fps = 5  # Cambia este valor para ajustar la velocidad del video
+    temperatura = 2.0  # Cambia esto según la temperatura correspondiente
+    fps = 100  # Cambia este valor para ajustar la velocidad de la animación
 
     matrices = leer_matrices(archivo)
-    crear_video_matrices(matrices, output_path, temperatura, fps)
+    mostrar_animacion_tiempo_real(matrices, temperatura, fps)
