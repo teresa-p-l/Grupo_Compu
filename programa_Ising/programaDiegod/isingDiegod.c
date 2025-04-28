@@ -16,7 +16,7 @@ El programa se basa en el algoritmo de Metropolis para simular el modelo de Isin
 #define TEMP_MAX 3.4        // Temperatura máxima
 #define TEMP_STEP 0.2     // Paso de temperatura
 #define MEDIDAS 50        // Número de pasos para tomar medidas
-#define Temp 1.0        // Temperatura de la simulación solo para el caso de 1 temperatura
+#define Temp 2.3        // Temperatura de la simulación solo para el caso de 1 temperatura
 
 // Definimos la red
 int spins[N][N]; // Red de espines
