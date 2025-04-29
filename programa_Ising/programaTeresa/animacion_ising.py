@@ -49,7 +49,68 @@ def update(frame):
     return ax,
 
 # Crear la animación
-anim = FuncAnimation(fig, update, frames=len(estados), interval=5, repeat=False)
+anim = FuncAnimation(fig, update, frames=len(estados), interval=20, repeat=False)
 
 # Guardar el video sin cv2
+plt.show()
+
+
+
+
+# Cambia esto por la ruta de tu archivo
+ruta_archivo = 'C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/programaTeresa/ising_data.txt'
+
+# Leer datos del archivo
+with open(ruta_archivo, 'r') as f:
+    lineas = f.readlines()
+
+# Ignorar la línea de encabezado
+datos = [linea.strip().split() for linea in lineas if not linea.startswith('#')]
+
+# Extraer columnas
+Eprom = [float(d[1]) for d in datos]
+Mprom = [float(d[2]) for d in datos]
+
+# Crear figuras y ejes para los dos plots
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6))
+fig.suptitle('Visualización en tiempo real de Eprom y Mprom')
+
+# Inicializar líneas vacías
+line1, = ax1.plot([], [], 'b-o', label='Eprom')
+line2, = ax2.plot([], [], 'r-o', label='Mprom')
+
+ax1.set_ylabel('Eprom')
+ax2.set_ylabel('Mprom')
+ax2.set_xlabel('Paso')
+
+ax1.grid(True)
+ax2.grid(True)
+ax1.legend()
+ax2.legend()
+
+# Inicializar listas de datos que se irán mostrando
+xdata, ydata1, ydata2 = [], [], []
+
+# Mostrar en tiempo real
+plt.ion()
+plt.show()
+
+for i in range(len(Eprom)):
+    xdata.append(i)
+    ydata1.append(Eprom[i])
+    ydata2.append(Mprom[i])
+    
+    line1.set_data(xdata, ydata1)
+    line2.set_data(xdata, ydata2)
+    
+    ax1.relim()
+    ax1.autoscale_view()
+    
+    ax2.relim()
+    ax2.autoscale_view()
+    
+    plt.pause(0.2)  # Velocidad de actualización (en segundos)
+
+# Mantener la ventana abierta al final
+plt.ioff()
 plt.show()

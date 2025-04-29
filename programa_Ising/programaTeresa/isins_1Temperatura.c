@@ -5,10 +5,10 @@
 
 // Inicializamos los parámetros
 
-#define N 40               // Tamaño de la red (NxN)
-#define STEPS 10000      // Pasos de Monte Carlo por temperatura
-#define MEDIDAS 100 //Número de pasos para tomar medidas
-#define TEMPERATURA 2     
+#define N 10              // Tamaño de la red (NxN)
+#define STEPS 3000      // Pasos de Monte Carlo por temperatura
+#define MEDIDAS 400 //Número de pasos para tomar medidas
+#define TEMPERATURA 3    
 
 // Definimos la red
 int spins[N][N]; // Red de espines
@@ -65,7 +65,7 @@ void monte_carlo_step(double T) {
         int x = rand() % N;
         int y = rand() % N;
         int dE = delta_energia(spins[x][y], x, y);
-        if ((rand() / (double)RAND_MAX) < probabilidad(dE, T)) // Si la probabilidad es menor que un número aleatorio entre 0 y 1, cambiamos el spin 
+        if ((rand() / ((double)RAND_MAX + 1 )) < probabilidad(dE, T)) // Si la probabilidad es menor que un número aleatorio entre 0 y 1, cambiamos el spin 
             spins[x][y] *= -1;
     }
 }
@@ -143,16 +143,17 @@ int main(){
     for (int i = 0; i < MEDIDAS; i++) {
         for (int j = 0; j < STEPS; j++) {
             monte_carlo_step(T);
+            E_T += energia_total();
+            M_T += magnetizacion();
         }
 
-        E_T += energia_total();
-        M_T += magnetizacion();
+        double Eprom = E_T / (2*i*N); // Energía promedio
+        double Mprom = M_T / i; // Magnetización promedio
+        double Cn=((E_T*E_T)/i-Eprom*Eprom)/(N*N*T); // Calor específico
 
-        double Eprom = (E_T / MEDIDAS) / (2* N); 
-        double Mprom = M_T / MEDIDAS;
         // Guardar medidas
         fprintf(data, "%.2f\t%.5f\t%.5f\n", T, Eprom, Mprom);
-        printf("T=%.2f\tE=%.5f\tM=%.5f\n", T, Eprom, Mprom);
+        printf("%.5f\n",Cn); // Calor específico
 
         // Guardar espines en el mismo archivo
         fprintf(spins_all, "# T = %.2f\n", T);
@@ -161,11 +162,13 @@ int main(){
                 fprintf(spins_all, "%d ", spins[i][j]);
             }
             fprintf(spins_all, "\n");
-
+        
+        E_T = 0.0; // Reiniciar energía total
+        M_T = 0.0; // Reiniciar magnetización total
+        
      }
      fprintf(spins_all, "\n"); // Separador entre temperaturas
 
-    
     }
 
     fclose(data);
