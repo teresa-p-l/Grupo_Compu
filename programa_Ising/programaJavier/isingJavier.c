@@ -55,7 +55,7 @@ void monte_carlo(double T)
         int x = rand() % N;
         int y = rand() % N;
         int dE = delta_energia(x, y);
-        if(rand()/RAND_MAX < probabilidad(dE,T))
+        if(rand()/(double)RAND_MAX < probabilidad(dE,T))
         {
             espines[x][y] *= -1;  
         }
@@ -101,14 +101,38 @@ int main()
 {
     srand(time(NULL));
 
-    int espines[N][N];
-
     inicializar_espines(espines);
     savefile("espines.txt");
     printf("Red inicial guardada en espines.txt\n");
 
-    
-    
+    FILE* resultados = fopen("resultados.txt", "w");
+    if (!resultados)
+    {
+        perror("Error al abrir el archivo de resultados");
+        return 1;
+    }
+
+    for (double T = temperatura_minima; T <= temperatura_maxima; T += temperatura_paso)
+    {
+        double energia_promedio = 0.0;
+
+        for (int paso = 0; paso < pasos; paso++)
+        {
+            monte_carlo(T);
+
+            if (paso % (pasos / medidas) == 0)
+            {
+                energia_promedio += energia_total();
+            }
+        }
+
+        energia_promedio /= medidas;
+        fprintf(resultados, "Temperatura: %.2f, Energia promedio: %.5f\n", T, energia_promedio);
+        printf("Temperatura: %.2f, Energia promedio: %.5f\n", T, energia_promedio);
+    }
+
+    fclose(resultados);
+    printf("Resultados guardados en resultados.txt\n");
 
     return 0;
 }

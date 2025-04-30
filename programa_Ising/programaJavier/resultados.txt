@@ -1,0 +1,11 @@
+Temperatura: 0.00, Energia promedio: -0.37600
+Temperatura: 0.50, Energia promedio: 4.72800
+Temperatura: 1.00, Energia promedio: -2.60000
+Temperatura: 1.50, Energia promedio: 4.00000
+Temperatura: 2.00, Energia promedio: 0.84400
+Temperatura: 2.50, Energia promedio: 4.20000
+Temperatura: 3.00, Energia promedio: 0.36000
+Temperatura: 3.50, Energia promedio: -2.26000
+Temperatura: 4.00, Energia promedio: 3.78400
+Temperatura: 4.50, Energia promedio: 4.52800
+Temperatura: 5.00, Energia promedio: -4.56000
