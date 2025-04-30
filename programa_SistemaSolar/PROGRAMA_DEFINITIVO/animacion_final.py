@@ -7,9 +7,10 @@ import matplotlib.cm as cm
 # Parámetros de la animación de los pkanetas
 #      CAMBIAD CADA UNO LA RUTA DE LOS FICHEROS EN VUETRO ORDENADOR
 
-file_in = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SALIDA.txt"  # Ruta de teresa
+#file_in = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SALIDA.txt"  # Ruta de teresa
 #file_in = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/SALIDA.txt"  # Ruta del fichero de datos
 #file_in = "C:/Users/User/Documents/Fisica_compu/Compu/Grupo_Compu/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SALIDA.txt"  # Ruta de teresa
+file_in = "C:/Users/Turkipollito/Escritorio/Universidad/3Fisica/Segundocuatri/Computacional/REPOSITORIO/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SALIDA.txt"  # Ruta de teresa
 
 file_out = "planetas"  # Nombre del fichero de salida (sin extensión)
 x_min, x_max = -50, 50  # Límites de los ejes X
@@ -24,9 +25,10 @@ planet_radius = 1  # Radio de los planetas
 # Leer archivo de energía
 #      CAMBIAD CADA UNO LA RUTA DE LOS FICHEROS EN VUETRO ORDENADOR
 
-energia_file = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SuperEnergia.txt"
+#energia_file = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SuperEnergia.txt"
 #energia_file = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/SuperEnergia.txt"
 #energia_file = "C:/Users/User/Documents/Fisica_compu/Compu/Grupo_Compu/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SuperEnergia.txt"
+energia_file = "C:/Users/Turkipollito/Escritorio/Universidad/3Fisica/Segundocuatri/Computacional/REPOSITORIO/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SuperEnergia.txt"  
 
 with open(energia_file, "r") as f:
     energia_values = [float(line.strip()) for line in f if line.strip()]
