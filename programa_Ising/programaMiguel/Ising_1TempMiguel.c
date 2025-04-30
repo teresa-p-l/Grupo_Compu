@@ -5,10 +5,10 @@
 
 // Inicializamos los parámetros
 
-#define N 10               // Tamaño de la red (NxN)
-#define STEPS 10000      // Pasos de Monte Carlo por temperatura
+#define N 50               // Tamaño de la red (NxN)
+#define STEPS 500     // Pasos de Monte Carlo por temperatura
 #define MEDIDAS 1000 //Número de pasos para tomar medidas
-#define TEMPERATURA 2      
+#define TEMPERATURA 2  
 
 // Definimos la red
 int spins[N][N]; // Red de espines
@@ -18,7 +18,7 @@ int spins[N][N]; // Red de espines
 void start_spins_rand(){
 for (int i=0; i < N; i++)
     for (int j=0; j<N; j++)
-        spins[i][j] = (rand() % 2) *2 -1;
+        spins[i][j] = 1;
 }
 
 // Otra opción para inicializar la red: la ponemos a 1 entera
@@ -40,7 +40,7 @@ int periodic(int i) {
 
 // Función que calcula el cambio de energía al cambiar el spin
 
-int delta_energia(int spin, int x, int y) {
+int delta_energia(int x, int y) {
     int s = spins[x][y];
     int suma_entorno =  spins[periodic(x+1)][y] +
         spins[periodic(x-1)][y] +
@@ -64,11 +64,17 @@ void monte_carlo_step(double T) {
     for (int i = 0; i < N * N; i++) {
         int x = rand() % N;
         int y = rand() % N;
-        int dE = delta_energia(spins[x][y], x, y);
-        if ((rand() / (double)RAND_MAX) < probabilidad(dE, T)) // Si la probabilidad es menor que un número aleatorio entre 0 y 1, cambiamos el spin 
+        int dE = delta_energia(x, y);
+
+        // Generamos número aleatorio en [0, 1) correctamente
+        double r = (double)rand() / (RAND_MAX + 1.0);
+
+        if (r < probabilidad(dE, T)) {
             spins[x][y] *= -1;
+        }
     }
 }
+
 
 
 // Función que calcula la magnetización total de la red
@@ -139,7 +145,7 @@ int main(){
 
         
         // Equilibrar el sistema
-        for (int i = 0; i < 5000; i++)
+        for (int i = 0; i < 10000; i++)
             monte_carlo_step(T);
         
 
@@ -154,7 +160,7 @@ int main(){
         E_T += energia_total();
         M_T += magnetizacion();
 
-        double Eprom = (E_T / MEDIDAS) / (2* N); 
+        double Eprom = (E_T / MEDIDAS) / (N* N); 
         double Mprom = M_T / MEDIDAS;
         // Guardar medidas
         fprintf(data, "%.2f\t%.5f\t%.5f\n", T, Eprom, Mprom);
