@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import re
 from matplotlib.animation import FuncAnimation
 from PIL import Image
+from matplotlib.animation import PillowWriter, FFMpegWriter
 
 # Ruta del archivo con todos los estados
 archivo = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/programaTeresa/spins_all_temps.txt"
@@ -49,12 +50,13 @@ def update(frame):
     return ax,
 
 # Crear la animación
-anim = FuncAnimation(fig, update, frames=len(estados), interval=20, repeat=False)
+anim = FuncAnimation(fig, update, frames=len(estados), interval=150, repeat=False)
 
 # Guardar el video sin cv2
 plt.show()
 
-
+writer = FFMpegWriter(fps=10)
+anim.save("C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/programaTeresa/animaciones/animacion_spins.mp4", writer=writer)
 
 
 # Cambia esto por la ruta de tu archivo
@@ -81,7 +83,7 @@ line2, = ax2.plot([], [], 'r-o', label='Mprom')
 
 ax1.set_ylabel('Eprom')
 ax2.set_ylabel('Mprom')
-ax2.set_xlabel('Paso')
+ax2.set_xlabel('Medidas')
 
 ax1.grid(True)
 ax2.grid(True)
@@ -91,9 +93,6 @@ ax2.legend()
 # Inicializar listas de datos que se irán mostrando
 xdata, ydata1, ydata2 = [], [], []
 
-# Mostrar en tiempo real
-plt.ion()
-plt.show()
 
 for i in range(len(Eprom)):
     xdata.append(i)
@@ -111,6 +110,9 @@ for i in range(len(Eprom)):
     
     plt.pause(0.2)  # Velocidad de actualización (en segundos)
 
-# Mantener la ventana abierta al final
-plt.ioff()
+# Mostrar en tiempo real
+plt.ion()
 plt.show()
+
+plt.savefig("C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/programaTeresa/animaciones/plot_energia_magnetizacion.png")
+plt.close()

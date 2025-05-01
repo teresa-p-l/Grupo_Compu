@@ -5,9 +5,8 @@
 
 // Inicializamos los parámetros
 
-#define N 20              // Tamaño de la red (NxN)
-#define STEPS 100      // Pasos de Monte Carlo por temperatura
-#define MEDIDAS 10 //Número de pasos para tomar medidas
+#define N 100              // Tamaño de la red (NxN)
+#define STEPS 500      // Pasos de Monte Carlo por temperatura
 #define TEMPERATURA 2.269    
 
 // Definimos la red
@@ -138,15 +137,27 @@ int main(){
     start_spins_rand(); // o start_spins_1() para todos a 1
 
 
+
+
+
+
+
+
+
+
+
     // Medir
     double E_T = 0.0, M_T = 0.0;
 
-    for (int i = 1; i < MEDIDAS; i++) {
-        for (int j = 0; j < STEPS; j++) {
+    monte_carlo_step(T);
+    E_T += energia_total();
+    M_T += magnetizacion();
+
+        for (int i = 1; i < STEPS; i++) {
             monte_carlo_step(T);
             E_T += energia_total();
             M_T += magnetizacion();
-        }
+        
 
         double Eprom = E_T / (2*i*N); // Energía promedio
         double Mprom = M_T / i; // Magnetización promedio
@@ -158,15 +169,12 @@ int main(){
 
         // Guardar espines en el mismo archivo
         fprintf(spins_all, "# T = %.2f\n", T);
-        for (int i = 0; i < N; i++) {
+        for (int k = 0; k < N; k++) {
             for (int j = 0; j < N; j++) {
-                fprintf(spins_all, "%d ", spins[i][j]);
+                fprintf(spins_all, "%d ", spins[k][j]);
             }
             fprintf(spins_all, "\n");
-            
-       
-        E_T = 0.0; // Reiniciar energía total
-        M_T = 0.0; // Reiniciar magnetización total
+        
         
      }  
      fprintf(spins_all, "\n"); // Separador entre temperaturas
