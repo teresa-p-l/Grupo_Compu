@@ -10,13 +10,13 @@ El programa se basa en el algoritmo de Metropolis para simular el modelo de Isin
 #include <time.h>
 #include <string.h>
 
-#define N 40                // Tamaño de la red (NxN)
-#define STEPS 30        // Pasos de Monte Carlo por temperatura
+#define N 200                // Tamaño de la red (NxN)
+#define STEPS 100        // Pasos de Monte Carlo por temperatura
 #define TEMP_MIN 0        // Temperatura mínima
 #define TEMP_MAX 3.4        // Temperatura máxima
 #define TEMP_STEP 0.2     // Paso de temperatura
-#define MEDIDAS 50        // Número de pasos para tomar medidas
-#define Temp 2.3        // Temperatura de la simulación solo para el caso de 1 temperatura
+#define MEDIDAS 1        // Número de pasos para tomar medidas
+#define Temp 2.26        // Temperatura de la simulación solo para el caso de 1 temperatura
 
 // Definimos la red
 int spins[N][N]; // Red de espines
@@ -123,13 +123,20 @@ void savespin(char* file)
 
 int main(void)
 {
+
+    //We start the clock to see how long it takes to run the program
+    clock_t start, end;
+    double cpu_time_used;
+    
     srand(time(NULL)); // Inicializamos la semilla para los números aleatorios
 
     FILE *data = fopen("ising_data.txt", "w");
     FILE *spins_all = fopen("spins_all_temps.txt", "w");
     FILE *spins1 = fopen("spinsSOLOUNA.txt", "w");
+    FILE *spins1f = fopen("spinsSOLOUNAf.txt", "w");
+    FILE *timefile = fopen("time.txt", "w");
 
-    if (!data || !spins_all || !spins) {
+    if (!data || !spins_all || !spins1 || !timefile) {
         perror("Error al abrir archivos");
         return 1;
     }
@@ -138,10 +145,10 @@ int main(void)
     start_spins_rand();
 
     //##############   FRAME A FRAME    ###########
-
 /*
-    //We now loop over EACH movement.
 
+    //We now loop over EACH movement.
+    fprintf(spins1f, "# T = %.2f, Steps = %d, Measures = %d\n", Temp, STEPS, MEDIDAS);
     for(int i=0; i<MEDIDAS; i++)
     {
     for(int j=1; j<STEPS; j++)
@@ -157,44 +164,52 @@ int main(void)
 
         for(int a=0; a<N; a++){
             for(int b=0; b<N; b++){
-                fprintf(spins1, "%d ", spins[a][b]);
+                fprintf(spins1f, "%d ", spins[a][b]);
             }
-            fprintf(spins1, "\n");
+            fprintf(spins1f, "\n");
         }
-        fprintf(spins1, "\n");
+        fprintf(spins1f, "\n");
     }    
     }
     }
     }
+
 */
 
-
     //###########Now if we want ONLY THE FINAL FRAME:###########3
-
+    
 
     //We will loop over the steps to stabilize the system
+
+    fprintf(spins1, "# T = %.2f, Steps = %d, Measures = %d\n", Temp, STEPS, MEDIDAS);
+   
     for(int j=0; j<MEDIDAS; j++){
+
     for (int step = 0; step < STEPS; step++) {
-            montecarlo_step(Temp);
-    
+        montecarlo_step(Temp);
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                fprintf(spins1, "%d ", spins[i][j]);
+                }
+            fprintf(spins1, "\n");
+            }   
+        fprintf(spins1, "\n"); // Separador entre temperaturas
+        
 
     //We calculate the energy
     double E = energia_total();
     fprintf(data, "%f %f\n", Temp, E);
 
-    //We save the spins in the file
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            fprintf(spins1, "%d ", spins[i][j]);
-          }
-        fprintf(spins1, "\n");
-       }
-    fprintf(spins1, "\n"); // Separador entre temperaturas
+    
+    printf("Steps %d\n", step+1); // Print the step number to see the progress
     }
-    }
+
+}
 
     
 
+
+//################ LOOP OVER TEMPERATURES ######################
 /*
     //We loop over the temperatures
     for (double T = TEMP_MIN; T <= TEMP_MAX; T += TEMP_STEP) {
@@ -218,9 +233,78 @@ int main(void)
         fprintf(spins_all, "\n"); // Separador entre temperaturas
     }
         */
+
+
+//######################################### TO SEE TIME ###########################################
+/*   
+
+
+//We can also loop over N. We do this to see how N affects the time it takes.
+
+
+int limit = 71; //number of maximum N.
+
+
+for(int a=N; a<limit+1; a++){
+
+
+int spins[a][a];
+
+
+for (int i=0; i < a; i++){
+    for (int j=0; j<a; j++)
+        {spins[i][j] = (rand() % 2) *2 -1;}
+}       
+
+//We placed start here to see the difference in time between the different N.
+//We can also place it at the beginning of the program, but we will see the time of the whole program.    
+start = clock();
+for(int j=0; j<MEDIDAS; j++){
+for (int step = 0; step < STEPS; step++) {
+    for (int i = 0; i < a * a; i++) {
+        int x = rand() % a;
+        int y = rand() % a;
+        int dE = delta_energia(spins[x][y], x, y);
+        if (( 1.0*rand() / (1.0*RAND_MAX)) < probabilidad(dE, Temp)) // If the probability is less than a random number between 0 and 1, we flip the spin 
+            spins[x][y] *= -1;
+    }
+
+//We calculate the energy
+double E = energia_total();
+fprintf(data, "%f %f\n", Temp, E);
+
+//We save the spins in the file
+for (int i = 0; i < a; i++) {
+    for (int j = 0; j < a; j++) {
+        fprintf(spins1, "%d ", spins[i][j]);
+      }
+    fprintf(spins1, "\n");
+   }
+fprintf(spins1, "\n"); // Separador entre temperaturas
+}
+}
+
+end = clock();
+cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+//Now we print the t"ime in the file time.txt
+fprintf(timefile, "%d %f\n", a, cpu_time_used);
+}
+        
+*/    
+    
+    
+    
+    
+    
     fclose(data);
     fclose(spins_all);
     fclose(spins1);
+    fclose(timefile);
+    fclose(spins1f);
+
+
+    //Now we finish the clock to see how long it takes to run the program
+    
 
     return 0;
 }
