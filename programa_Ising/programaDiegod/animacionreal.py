@@ -10,7 +10,7 @@ def leer_matrices(filename):
     """
     matrices = []
     with open(filename, 'r') as file:
-        lines = file.readlines()
+        lines = file.readlines()[1:]  # Ignorar la primera línea
         matriz = []
 
         for line in lines:
@@ -49,7 +49,7 @@ def mostrar_animacion_tiempo_real(matrices, temperatura, fps=5):
         ax.imshow(matriz, cmap=cmap, vmin=-1, vmax=1)
 
     # Crear los frames
-    frames = [np.array(matriz) for matriz in matrices]
+    frames = [np.array(matriz, dtype=np.int8) for matriz in matrices]
 
     # Crear la animación
     anim = animation.FuncAnimation(fig, actualizar, frames=frames, interval=1000 // fps, repeat=False)
@@ -60,8 +60,8 @@ def mostrar_animacion_tiempo_real(matrices, temperatura, fps=5):
 # Ejemplo de uso
 if __name__ == "__main__":
     archivo = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spinsSOLOUNA.txt"
-    temperatura = 2.3  # Cambia esto según la temperatura correspondiente
-    fps = 100  # Cambia este valor para ajustar la velocidad de la animación
+    temperatura = 2.26  # Cambia esto según la temperatura correspondiente
+    fps = 24  # Cambia este valor para ajustar la velocidad de la animación
 
     matrices = leer_matrices(archivo)
     mostrar_animacion_tiempo_real(matrices, temperatura, fps)

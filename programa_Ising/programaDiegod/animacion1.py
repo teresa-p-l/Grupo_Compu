@@ -11,7 +11,7 @@ def leer_matrices(filename):
     """
     matrices = []
     with open(filename, 'r') as file:
-        lines = file.readlines()
+        lines = file.readlines()[1:]  # Ignorar la primera línea
         matriz = []
 
         for line in lines:
@@ -54,7 +54,7 @@ def crear_video_matrices(matrices, output_path, temperatura, fps=2):
         ax.imshow(matriz, cmap=cmap, vmin=-1, vmax=1)
 
     # Crear los frames
-    frames = [np.array(matriz) for matriz in matrices]
+    frames = [np.array(matriz, dtype=np.int8) for matriz in matrices]
 
     # Crear la animación
     anim = animation.FuncAnimation(fig, actualizar, frames=frames, repeat=False)
@@ -76,8 +76,8 @@ if __name__ == "__main__":
     output_path = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spinsSOLOUNA_video.mp4"
     
     
-    temperatura = 1.0  # Cambia esto según la temperatura correspondiente
-    fps = 5  # Cambia este valor para ajustar la velocidad del video
+    temperatura = 2.26  # Cambia esto según la temperatura correspondiente
+    fps = 30  # Cambia este valor para ajustar la velocidad del video
 
     matrices = leer_matrices(archivo)
     crear_video_matrices(matrices, output_path, temperatura, fps)
