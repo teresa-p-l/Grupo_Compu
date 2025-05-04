@@ -6,8 +6,8 @@
 // Inicializamos los parámetros
 
 #define N 20              // Tamaño de la red (NxN)
-#define STEPS 100      // Pasos de Monte Carlo por temperatura
-#define MEDIDAS 10 //Número de pasos para tomar medidas
+#define STEPS 1000      // Pasos de Monte Carlo por temperatura
+#define MEDIDAS 100 //Número de pasos para tomar medidas
 #define TEMPERATURA 2.269    
 
 // Definimos la red

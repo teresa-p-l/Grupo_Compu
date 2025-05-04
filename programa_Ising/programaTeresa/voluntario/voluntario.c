@@ -14,7 +14,7 @@
 #define mass 1.0
 #define v_0 1.0
 #define h 0.0002
-#define Time 30
+#define Time 5
 #define PI 3.14159265358979323846
 
 
