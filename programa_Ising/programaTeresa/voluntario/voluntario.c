@@ -6,7 +6,7 @@
 
 // Inicializamos los parámetros
 
-#define N 20        // Número de átomos
+#define N 25        // Número de átomos
 #define L 10.0    // Longitud de la caja
 #define epsilon 1.0 
 #define sigma 1.0
@@ -14,7 +14,7 @@
 #define mass 1.0
 #define v_0 1.0
 #define h 0.0002
-#define Time 5
+#define Time 0.5
 #define PI 3.14159265358979323846
 
 
@@ -23,7 +23,8 @@
 double r[N][2];             // Posiciones
 double v[N][2];             // Velocidades
 double a[N][2];             // Aceleraciones
-
+double Temp;             // Temperatura  
+double V_promedio;  
 
 // Función para hacer las coordenadas periódicas
 
@@ -51,7 +52,19 @@ void dist_min(double *r_i, double *r_j, double *R) {
 // Establecemos las condiciones iniciales 
 
 void initial_conditions () {
-    srand(time(NULL));  // Inicializar la semilla para números aleatorios
+    
+    for(int i = 0; i < N; i++) {
+        r[i][0] = (i % ((int)sqrt(N)+1))*L/((int)sqrt(N)+1);      // Posiciones aleatorias
+        r[i][1] = (i / ((int)sqrt(N)+1))*L/((int)sqrt(N)+1); 
+
+        double theta = ((double)rand() / (double)RAND_MAX) * 2 * PI;
+
+        v[i][0] = v_0 * 40*cos(theta);          // Velocidades de módulo 1 y ángulos aleatorios
+        v[i][1] = v_0 * 40*sin(theta);
+    }
+
+
+    /*srand(time(NULL));  // Inicializar la semilla para números aleatorios
 
     for (int i = 0; i < N; i++) {
         r[i][0] = ((double) rand() / RAND_MAX) * L;      // Posiciones aleatorias
@@ -62,6 +75,7 @@ void initial_conditions () {
         v[i][0] = v_0 * cos(theta);          // Velocidades de módulo 1 y ángulos aleatorios
         v[i][1] = v_0 * sin(theta);
     }
+        */
 }
 
 
@@ -161,13 +175,13 @@ void compute_energy(FILE *archivo_energia) {
 }
 
 
-// Función para calcular la temperatura del sistema
-double compute_temperature() {
+// Función para calcular la temperatura del sistema y el histograma de velocidades
+double compute_histogram_v() {
     double suma = 0.0;
     for (int i = 0; i < N; i++) {
         suma += v[i][0]*v[i][0] + v[i][1]*v[i][1];
     }
-    return (mass/(2*k)) * suma/N;
+    return suma / N;
 }
 
 
@@ -185,9 +199,9 @@ int main(void) {
         return 1;
     }
 
-    FILE *archivo_temperatura = fopen("temperatura.txt", "w");
-    if (archivo_temperatura == NULL) {
-        printf("Error al abrir el archivo de temperatura.\n");
+    FILE *archivo_velocidades = fopen("velocidades.txt", "w");
+    if (archivo_velocidades == NULL) {
+        printf("Error al abrir el archivo de velocidades.\n");
         return 1;
     }
 
@@ -195,28 +209,33 @@ int main(void) {
     aceleracion();  
 
  
+
     // Guardar posiciones iniciales
     for (int i = 0; i < N; i++) {
         fprintf(archivo_posiciones, "%e %e\n", r[i][0], r[i][1]);
     }
     fprintf(archivo_posiciones, "\n");
     
+    // Guardamos la temperatura para hacer el histograma de velocidades en Python
+    printf("%e \n", Temp);
+
+    V_promedio = 0.0;
     // Bucle principal de la simulación
     int steps = (int)(Time/h);
     for (int step = 0; step < steps; step++) {
         verlet(archivo_posiciones);
         compute_energy(archivo_energia);
-        
-        // Guardar temperatura cada cierto número de pasos
-        if (step % 100 == 0) {
-            double temp = compute_temperature();
-            fprintf(archivo_temperatura, "%e %e\n", step*h, temp);
-        }
+        compute_histogram_v();
+        V_promedio += compute_histogram_v(); 
+        fprintf(archivo_velocidades, "%e\n",V_promedio / step); 
+        printf("%e\n", compute_histogram_v()); // Imprimir la temperatura en cada paso
     }
+
+
     
     fclose(archivo_posiciones);
     fclose(archivo_energia);
-    fclose(archivo_temperatura);
+    fclose(archivo_velocidades);
     printf("Simulación completada. Resultados guardados en archivos de salida.\n");
 
     return 0;
