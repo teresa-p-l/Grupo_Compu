@@ -5,9 +5,11 @@
 
 // Inicializamos los parámetros
 
-#define N 100              // Tamaño de la red (NxN)
-#define STEPS 500      // Pasos de Monte Carlo por temperatura
-#define TEMPERATURA 2.269    
+#define N 20              // Tamaño de la red (NxN)
+#define STEPS 1000      // Pasos de Monte Carlo por temperatura
+#define TEMPERATURA 2.269  
+
+
 
 // Definimos la red
 int spins[N][N]; // Red de espines

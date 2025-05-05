@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from matplotlib.colors import LinearSegmentedColormap
 
 # === CARGAR DATOS ===
 
@@ -35,14 +36,19 @@ ax_blank = axs[0, 1]
 ax_E = axs[1, 0]
 ax_M = axs[1, 1]
 
+custom_cmap = LinearSegmentedColormap.from_list("custom_blue", ["#5DADE2", "#154360"])  # Adjusted light and dark blue
 # Subplot de espines
-im = ax_spin.imshow(frames[0], cmap='gray', vmin=-1, vmax=1)
-ax_spin.set_title('Spins (-1 negro, 1 blanco)')
+im = ax_spin.imshow(frames[0], cmap=custom_cmap, vmin=-1, vmax=1)
+ax_spin.set_title(f'Red de {N} spins')
 ax_spin.axis('off')
 
 # Subplot en blanco
+# Cargar datos del archivo con T, step y medidas
+with open('C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/programaTeresa/datos_red.txt', 'r') as f:
+    T, step, medidas = map(float, f.readline().strip().split())
+
 ax_blank.axis('off')
-ax_blank.set_title('Subplot en blanco')
+ax_blank.set_title(f'T = {T}, Step = {step}, Medidas = {medidas}')
 
 # Subplot Eprom
 line_E, = ax_E.plot([], [], 'r-')
@@ -71,3 +77,5 @@ ani = FuncAnimation(fig, update, frames=len(frames), interval=300, blit=False)
 
 plt.tight_layout()
 plt.show()
+
+ani.save('C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/programaTeresa/animaciones/animacion.mp4', writer='ffmpeg', fps=30)

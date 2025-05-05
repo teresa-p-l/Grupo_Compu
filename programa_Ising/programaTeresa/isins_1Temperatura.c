@@ -5,9 +5,9 @@
 
 // Inicializamos los parámetros
 
-#define N 20              // Tamaño de la red (NxN)
+#define N 10              // Tamaño de la red (NxN)
 #define STEPS 1000      // Pasos de Monte Carlo por temperatura
-#define MEDIDAS 100 //Número de pasos para tomar medidas
+#define MEDIDAS 80 //Número de pasos para tomar medidas
 #define TEMPERATURA 2.269    
 
 // Definimos la red
@@ -121,11 +121,14 @@ int main(){
 
     FILE *data = fopen("ising_data.txt", "w");
     FILE *spins_all = fopen("spins_all_temps.txt", "w");
+    FILE *grid_data = fopen("datos_red.txt", "w");
 
     if (!data || !spins_all) {
         perror("Error al abrir archivos");
         return 1;
     }
+    
+    fprintf(grid_data, "%e %d %d\n", TEMPERATURA, STEPS, MEDIDAS); // Guardar datos de la red en un archivo
 
     double T = TEMPERATURA; // Temperatura a la que queremos calcular
 
@@ -144,6 +147,15 @@ int main(){
     for (int i = 1; i < MEDIDAS; i++) {
         for (int j = 0; j < STEPS; j++) {
             monte_carlo_step(T);
+                    
+            // Guardar espines en el mismo archivo
+            fprintf(spins_all, "# T = %.2f\n", T);
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    fprintf(spins_all, "%d ", spins[i][j]);
+                }
+                fprintf(spins_all, "\n");
+            }
             E_T += energia_total();
             M_T += magnetizacion();
         }
@@ -156,19 +168,13 @@ int main(){
         fprintf(data, "%.2f\t%.5f\t%.5f\n", T, Eprom, Mprom);
         //printf("%.5f\n",Cn); // Calor específico
 
-        // Guardar espines en el mismo archivo
-        fprintf(spins_all, "# T = %.2f\n", T);
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                fprintf(spins_all, "%d ", spins[i][j]);
-            }
-            fprintf(spins_all, "\n");
+
             
        
         E_T = 0.0; // Reiniciar energía total
         M_T = 0.0; // Reiniciar magnetización total
         
-     }  
+       
      fprintf(spins_all, "\n"); // Separador entre temperaturas
 
     }
@@ -176,6 +182,7 @@ int main(){
 
     fclose(data);
     fclose(spins_all);
+    fclose(grid_data);
     printf("¡Todo guardado en ising_data.txt y spins_all_temps.txt!\n");
     return 0;
 
