@@ -72,8 +72,8 @@ if __name__ == "__main__":
     
     
     #Ahora si solo queremos el final:
-    archivo = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spinsSOLOUNA.txt"
-    output_path = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spinsSOLOUNA_video.mp4"
+    archivo = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/programaDiegod/spinsSOLOUNA.txt"
+    output_path = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/programaDiegod/spinsSOLOUNA_video.mp4"
     
     
     temperatura = 2.26  # Cambia esto según la temperatura correspondiente

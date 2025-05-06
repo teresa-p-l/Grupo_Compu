@@ -69,8 +69,8 @@ def plot_time_data_with_fit(x, y, xlim=None, ylim=None, output_file="plottime.pn
 
 # Example usage
 if __name__ == "__main__":
-    filename = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/time.txt"
-    output_file = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/plottime.png"
+    filename = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/programaDiegod/time.txt"
+    output_file = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/programaDiegod/plottime.png"
     x, y = read_time_file(filename)
 
     # Set axis limits (change these values as needed)

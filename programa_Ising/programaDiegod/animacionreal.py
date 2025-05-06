@@ -59,9 +59,9 @@ def mostrar_animacion_tiempo_real(matrices, temperatura, fps=5):
 
 # Ejemplo de uso
 if __name__ == "__main__":
-    archivo = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spinsSOLOUNA.txt"
+    archivo = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/programaDiegod/spinsSOLOUNA.txt"
     temperatura = 2.26  # Cambia esto según la temperatura correspondiente
-    fps = 24  # Cambia este valor para ajustar la velocidad de la animación
+    fps = 60 # Cambia este valor para ajustar la velocidad de la animación
 
     matrices = leer_matrices(archivo)
     mostrar_animacion_tiempo_real(matrices, temperatura, fps)
