@@ -1,3 +1,24 @@
+/*
+
+ESTE PROGRAMA SIRVE PARA VER EL TIEMPO QUE TARDA EN HACER MONTE CARLO PARA DISTINTOS N
+
+NO HACE LOS PASOS DE MONTECARLO SOLO, TAMBIÉN LAS MEDIDAS
+
+ASÍ QUE HACE #medidas de #steps de montecarlo para cada N
+
+LO EXPORTA AL ARCHIVO time.txt
+
+LOS DATOS SE PRESENTAN DE ESTA MANERA:
+
+N_1 tiempo_1
+N_2 tiempo_2
+N_3 tiempo_3
+...
+*/
+
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -7,6 +28,7 @@
 #define STEPS 50        // Pasos de Monte Carlo por temperatura
 #define MEDIDAS 50      // Número de pasos para tomar medidas
 #define Temp 2.3        // Temperatura de la simulación solo para el caso de 1 temperatura
+#define limit 40      // Límite superior para N
 
 // Función periódica para índices
 int periodic(int i, int N) {
@@ -94,7 +116,7 @@ int main(void) {
         return 1;
     }
 
-    int limit = 151;  // Número máximo de N
+
     for (int N = 20; N <= limit; N++) {
         // Crear la matriz de spins dinámicamente
         int** spins = create_spins(N);

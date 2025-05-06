@@ -1,3 +1,12 @@
+#
+# ESTE PROGRAMA SIRVE PARA PLOTEAR EL TIEMPO DE TIME.TXT
+# HAY QUE MODIFICAR AL FINAL LOS LÍMITES DEL EJE X Y DEL EJE Y
+# 
+# TE MUESTRA EL PLOT EN PLOTTIME.PNG Y LO GUARDA EN EL MISMO LUGAR
+#
+
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
