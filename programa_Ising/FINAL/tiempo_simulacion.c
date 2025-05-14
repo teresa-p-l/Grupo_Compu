@@ -65,20 +65,6 @@ void montecarlo_step(int** spins, int N, double T) {
     }
 }
 
-// Calcular la energía total
-double energia_total(int** spins, int N) {
-    double E = 0.0;
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            E += spins[i][j] * (
-                spins[i][periodic(j + 1, N)] +
-                spins[i][periodic(j - 1, N)] +
-                spins[periodic(i + 1, N)][j] +
-                spins[periodic(i - 1, N)][j]);
-        }
-    }
-    return -E * 0.5;
-}
 
 // Inicializar los spins aleatoriamente con -1 y +1
 void start_spins_rand(int** spins, int N) {

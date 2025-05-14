@@ -11,6 +11,31 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
+
+
+
+#Parámetro del eje X, inferior y superior
+a=19
+b=41
+
+#Parámetro del eje Y, inferior y superior
+c=0.0
+d=4.5
+
+
+
+#RUTAS:
+
+#ruta de diego:
+#c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/FINAL/time.txt
+#c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/FINAL/plottime.png
+
+
+
+
+
+
+
 def read_time_file(filename):
     """
     Reads the file 'time.txt' and returns two lists: x (integers) and y (floats).
@@ -32,7 +57,7 @@ def fit_function(x, a,b,c):
     """
     return a * x**2 + b * x + c
 
-def plot_time_data_with_fit(x, y, xlim=None, ylim=None, output_file="plottime.png"):
+def plot_time_data_with_fit(x, y, xlim=None, ylim=None, output_file="c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/FINAL/plottime.png"):
     """
     Plots the data from the file, fits it to a function, and saves the plot as a PNG.
     """
@@ -69,13 +94,13 @@ def plot_time_data_with_fit(x, y, xlim=None, ylim=None, output_file="plottime.pn
 
 # Example usage
 if __name__ == "__main__":
-    filename = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/programaDiegod/time.txt"
-    output_file = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/programaDiegod/plottime.png"
+    filename = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/FINAL/time.txt"
+    output_file = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/FINAL/plottime.png"
     x, y = read_time_file(filename)
 
     # Set axis limits (change these values as needed)
-    x_limits = (19, 202)  # Example: x-axis limits
-    y_limits = (0.0, 4.5)  # Example: y-axis limits
+    x_limits = (a, b)  # Example: x-axis limits
+    y_limits = (c, d)  # Example: y-axis limits
 
     # Plot the data with fit and save it
     plot_time_data_with_fit(x, y, xlim=x_limits, ylim=y_limits, output_file=output_file)

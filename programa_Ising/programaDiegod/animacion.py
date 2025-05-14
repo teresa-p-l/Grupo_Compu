@@ -63,8 +63,8 @@ def crear_video(datos, output_path):
 
 # Ejemplo de uso
 if __name__ == "__main__":
-    archivo = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spins_all_temps.txt"
-    salida_video = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/programa_Ising/programaDiegod/spins_video.mp4"
+    archivo = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/programaDiegod/spins_all_temps.txt"
+    salida_video = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Ising/programaDiegod/spins_video.mp4"
 
     datos = leer_spins(archivo)
     crear_video(datos, salida_video)
