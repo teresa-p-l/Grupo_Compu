@@ -66,15 +66,30 @@ ax_M.set_title('Magnetización Promedio')
 ax_M.set_xlabel('Paso')
 ax_M.set_ylabel('M')
 
+
+max_frames = max(len(frames), len(Eprom), len(Mprom))
+
 # === ANIMACIÓN ===
 def update(frame_idx):
-    im.set_data(frames[frame_idx])
-    line_E.set_data(range(frame_idx + 1), Eprom[:frame_idx + 1])
-    line_M.set_data(range(frame_idx + 1), Mprom[:frame_idx + 1])
+    # Para los frames de spins, mantén el último frame si hemos llegado al final
+    spin_idx = min(frame_idx, len(frames) - 1)
+    im.set_data(frames[spin_idx])
+    
+    # Para las series temporales, muestra solo hasta el frame actual o el último disponible
+    e_idx = min(frame_idx + 1, len(Eprom))
+    m_idx = min(frame_idx + 1, len(Mprom))
+    
+    line_E.set_data(range(e_idx), Eprom[:e_idx])
+    line_M.set_data(range(m_idx), Mprom[:m_idx])
+    
+    # Actualizar el título del subplot en blanco para mostrar el progreso
+    progress = f"Frame: {frame_idx+1}/{max_frames}"
+    ax_blank.set_title(f'T = {T}, Step = {step}, Medidas = {medidas}\n{progress}')
+    
     return im, line_E, line_M
 
-ani = FuncAnimation(fig, update, frames=len(frames), interval=200, blit=False)
+ani = FuncAnimation(fig, update, frames=len(frames), interval=0.1, blit=False)
 
 plt.tight_layout()
 plt.show()
-ani.save(f'C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/FINAL/animaciones/animacion T = {T}, Step = {step}, Medidas = {medidas}.mp4', writer='ffmpeg', fps=100)
+ani.save(f'C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/FINAL/animaciones/animaciona T = {T}, Step = {step}, Medidas = {medidas}.mp4', writer='ffmpeg', fps=30)
