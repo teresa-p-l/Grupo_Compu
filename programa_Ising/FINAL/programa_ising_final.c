@@ -7,8 +7,8 @@
 
 #define N 100              // Tamaño de la red (NxN)
 #define STEPS 5      // Pasos de Monte Carlo por temperatura
-#define MEDIDAS 80 //Número de pasos para tomar medidas
-#define TEMPERATURA 1.0   
+#define MEDIDAS 70 //Número de pasos para tomar medidas
+#define TEMPERATURA 0.9   
 
 // Definimos la red
 int spins[N][N]; // Red de espines

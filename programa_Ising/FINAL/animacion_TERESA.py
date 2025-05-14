@@ -48,7 +48,7 @@ with open('C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/FINAL/datos_
     T, step, medidas = map(float, f.readline().strip().split())
 
 ax_blank.axis('off')
-ax_blank.set_title(f'T = {T}, Step = {step}, Medidas = {medidas}')
+ax_blank.text(0.5, 0.5,f'T = {T}, Step = {step}, Medidas = {medidas} \n No thread optimization \n AMD Ryzen 7 7730U, 8 cores', fontsize=12, ha='center', va='center', transform=ax_blank.transAxes)
 
 # Subplot Eprom
 line_E, = ax_E.plot([], [], 'r-')
@@ -84,7 +84,7 @@ def update(frame_idx):
     
     # Actualizar el título del subplot en blanco para mostrar el progreso
     progress = f"Frame: {frame_idx+1}/{max_frames}"
-    ax_blank.set_title(f'T = {T}, Step = {step}, Medidas = {medidas}\n{progress}')
+    ax_blank.set_title(f'{progress}')
     
     return im, line_E, line_M
 
@@ -92,4 +92,4 @@ ani = FuncAnimation(fig, update, frames=len(frames), interval=0.1, blit=False)
 
 plt.tight_layout()
 plt.show()
-ani.save(f'C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/FINAL/animaciones/animaciona T = {T}, Step = {step}, Medidas = {medidas}.mp4', writer='ffmpeg', fps=30)
+ani.save(f'C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_Ising/FINAL/animaciones/animaciona T = {T}, Step = {step}, Medidas = {medidas}, Spins = {N}.mp4', writer='ffmpeg', fps=30)
