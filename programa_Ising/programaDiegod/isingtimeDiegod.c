@@ -61,6 +61,7 @@ void montecarlo_step(int** spins, int N, double T) {
         int dE = delta_energia(spins, x, y, N);
         if ((1.0 * rand() / RAND_MAX) < probabilidad(dE, T)) {
             spins[x][y] *= -1;
+            break;
         }
     }
 }
