@@ -13,14 +13,14 @@ file_in = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_Sist
 #file_in = "C:/Users/Turkipollito/Escritorio/Universidad/3Fisica/Segundocuatri/Computacional/REPOSITORIO/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SALIDA.txt"  # Ruta de teresa
 
 file_out = "planetas"  # Nombre del fichero de salida (sin extensión)
-x_min, x_max = -50, 50  # Límites de los ejes X
-y_min, y_max = -50, 50  # Límites de los ejes Y
-interval = 0.2  # Tiempo entre fotogramas en milisegundos
+x_min, x_max = -25, 25  # Límites de los ejes X
+y_min, y_max = -25, 25  # Límites de los ejes Y
+interval = 1000/60  # Tiempo entre fotogramas en milisegundos
 show_trail = True  # Mostrar estelas
 trail_width = 1  # Ancho de las estelas
-save_to_file = False  # Guardar en fichero
+save_to_file = True  # Guardar en fichero
 dpi = 150  # Calidad del vídeo
-planet_radius = 1  # Radio de los planetas
+planet_radius = 0.3  # Radio de los planetas
 
 # Leer archivo de energía
 #      CAMBIAD CADA UNO LA RUTA DE LOS FICHEROS EN VUETRO ORDENADOR

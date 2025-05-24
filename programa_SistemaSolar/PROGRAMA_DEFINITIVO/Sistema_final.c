@@ -16,8 +16,8 @@ typedef struct {
 #define C 1.496e11        // Unidad de distancia: distancia Tierra-Sol en metros
 
 #define planetas 9               // Número de cuerpos (por ejemplo, Sol y Tierra)
-#define T_TOTAL 500.0    // Tiempo total de simulación (en unidades reescaladas)
-#define h 0.5           // Paso temporal
+#define T_TOTAL 1000.0    // Tiempo total de simulación (en unidades reescaladas)
+#define h 0.2           // Paso temporal
 
 int N = planetas; //Número de planetas, por si acaso.
 void aceleracion(Body cuerpos[]) 
@@ -224,7 +224,7 @@ void calcularPeriodo(Body cuerpos[], int N, FILE *archivo)
 
 int main (void)
 {
-    FILE *archivo = fopen("inicialreescalado.txt", "r");
+    FILE *archivo = fopen("inicial_cambiacosas.txt", "r");
     if (archivo == NULL) {
         printf("Error al abrir el archivo.\n");
         return 1;
