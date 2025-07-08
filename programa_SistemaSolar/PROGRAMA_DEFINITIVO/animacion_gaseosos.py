@@ -7,25 +7,25 @@ import matplotlib.cm as cm
 # Parámetros de la animación de los pkanetas
 #      CAMBIAD CADA UNO LA RUTA DE LOS FICHEROS EN VUETRO ORDENADOR
 
-file_in = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SALIDA.txt"  # Ruta de teresa
-#file_in = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/SALIDA.txt"  # Ruta del fichero de datos
+#file_in = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SALIDA.txt"  # Ruta de teresa
+file_in = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SALIDA.txt"  # Ruta del fichero de datos
 #file_in = "C:/Users/User/Documents/Fisica_compu/Compu/Grupo_Compu/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SALIDA.txt"  # Ruta de teresa
 
-file_out = "planetas"  # Nombre del fichero de salida (sin extensión)
+file_out = "Planetas_GaseososDentro"  # Nombre del fichero de salida (sin extensión)
 x_min, x_max = -10, 10  # Límites de los ejes X
 y_min, y_max = -10, 10  # Límites de los ejes Y
 interval = 0.2  # Tiempo entre fotogramas en milisegundos
 show_trail = True  # Mostrar estelas
 trail_width = 1  # Ancho de las estelas
-save_to_file = False  # Guardar en fichero
+save_to_file = True  # Guardar en fichero
 dpi = 150  # Calidad del vídeo
 planet_radius = 0.5  # Radio de los planetas
 
 # Leer archivo de energía
 #      CAMBIAD CADA UNO LA RUTA DE LOS FICHEROS EN VUETRO ORDENADOR
 
-energia_file = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SuperEnergia.txt"
-#energia_file = "c:/Users/diego/Desktop/Fisica_Computacional/GrupoCompu/Grupo_Compu/SISTEMAFINAL/SuperEnergia.txt"
+#energia_file = "C:/Users/Teresa/Desktop/COMPU/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SuperEnergia.txt"
+energia_file = "c:/Users/diego/Desktop/Fisica_Computacional/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SuperEnergia.txt"
 #energia_file = "C:/Users/User/Documents/Fisica_compu/Compu/Grupo_Compu/Grupo_Compu/programa_SistemaSolar/PROGRAMA_DEFINITIVO/SuperEnergia.txt"
 
 with open(energia_file, "r") as f:
